@@ -1,0 +1,2855 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About QR Safety System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Font: Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- HEADER ONLY (standalone) -->
+    <header class="scankaro-header">
+      <div class="header-container">
+        <!-- LOGO -->
+        <div class="logo">
+          <img
+            src="https://scankarohelpkaro.com/images/logo.png"
+            alt="ScanKaro Logo"
+            onerror="this.src = 'https://placehold.co/52x52?text=SK'"
+          />
+        </div>
+
+        <!-- DESKTOP NAVIGATION (full menu) -->
+        <div class="nav">
+          <div class="nav-item">
+            <a href="index.html" class="nav-link active">Home</a>
+          </div>
+          <div class="nav-item">
+            <a href="about.html" class="nav-link">About Us</a>
+          </div>
+          <!-- Smart QR dropdown -->
+          <div class="nav-item">
+            <a href="#" class="nav-link"
+              >Smart QR <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-menu">
+              <a href="index.html#SmartFeatures"
+                ><i class="fas fa-microchip"></i> Smart Features</a
+              >
+              <a href="index.html#QrProducts"
+                ><i class="fas fa-cubes"></i> QR Safety Products</a
+              >
+              <a href="#QRESS"
+                ><i class="fas fa-truck-fast"></i> Emergency & Safety
+                Services</a
+              >
+              <a href="index.html#QRUC"
+                ><i class="fas fa-chart-simple"></i> QR Use Cases</a
+              >
+              <a href="index.html#ESS"
+                ><i class="fas fa-bolt"></i> QR Emergency Smart Services</a
+              >
+            </div>
+          </div>
+          <!-- Identity dropdown -->
+          <div class="nav-item">
+            <a href="#" class="nav-link"
+              >Identity <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-menu">
+              <a href="index.html"
+                ><i class="fas fa-id-card"></i> Digital Identity</a
+              >
+              <a href="index.html#AboutUs"
+                ><i class="fas fa-shield-heart"></i> Privacy Shield</a
+              >
+              <a href="index.html#FAQ"
+                ><i class="fas fa-circle-info"></i> Identity FAQ</a
+              >
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="index.html#FAQ" class="nav-link">FAQ</a>
+          </div>
+        </div>
+
+        <!-- RIGHT SECTION: Login + Avatar + Hamburger -->
+        <div class="right-section">
+          <!-- <button id="desktopLoginBtn" class="desktop-login-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button> -->
+          <button class="login-icon-btn" id="loginIconAvatarBtn">
+            <i class="fas fa-sign-in-alt" id="avatarIcon"></i>
+            <div class="avatar-dropdown" id="avatarDropdown">
+              <a href="#" id="dropdownLogoutBtn"
+                ><i class="fas fa-sign-out-alt"></i> Login</a
+              >
+              <a href="#" id="profileLink"
+                ><i class="fas fa-user-cog"></i> Profile</a
+              >
+            </div>
+          </button>
+          <button class="menu-btn" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE DRAWER (contains all navigation + social media links) -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="mobile-header">
+        <div class="mobile-logo">
+          <img src="https://scankarohelpkaro.com/images/logo.png" alt="logo" />
+        </div>
+        <div class="mobile-close" id="closeDrawerBtn">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div id="mobileDynamicContent"></div>
+      <div class="mobile-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+
+    <!-- LOGIN POPUP -->
+    <div class="popup-overlay" id="loginPopup">
+      <div class="popup-box">
+        <div class="popup-close-x" id="closePopupX">✕</div>
+        <h3>Welcome Back</h3>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Email address"
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <button id="submitLoginBtn">Sign In →</button>
+        <a
+          href="#"
+          style="
+            display: inline-block;
+            margin-top: 16px;
+            color: #6c9eff;
+            text-decoration: none;
+            font-size: 13px;
+          "
+          >Forgot Password?</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // ---------- STATE MANAGEMENT ----------
+      let isLoggedIn = false;
+      let currentUserEmail = "";
+
+      // DOM elements
+      const desktopLoginBtnElem = document.getElementById("desktopLoginBtn");
+      const loginIconAvatarBtn = document.getElementById("loginIconAvatarBtn");
+      const mobileContent = document.getElementById("mobileDynamicContent");
+      const popup = document.getElementById("loginPopup");
+      const closePopupX = document.getElementById("closePopupX");
+      const submitLoginBtn = document.getElementById("submitLoginBtn");
+      const loginEmailInput = document.getElementById("loginEmail");
+      const loginPasswordInput = document.getElementById("loginPassword");
+      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+      const mobileOverlay = document.getElementById("mobileOverlay");
+      const mobileDrawer = document.getElementById("mobileDrawer");
+      const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+
+      // Helper: update UI based on login state
+      function updateUIForAuth() {
+        if (desktopLoginBtnElem) {
+          desktopLoginBtnElem.style.display = isLoggedIn ? "none" : "flex";
+        }
+        // Update avatar button
+        if (loginIconAvatarBtn) {
+          if (isLoggedIn && currentUserEmail) {
+            let initial = currentUserEmail.charAt(0).toUpperCase();
+            loginIconAvatarBtn.innerHTML = "";
+            loginIconAvatarBtn.classList.add("user-avatar");
+            loginIconAvatarBtn.textContent = initial;
+            const newDropdown = document.createElement("div");
+            newDropdown.className = "avatar-dropdown";
+            newDropdown.innerHTML = `<a href="#" id="dropdownLogoutDynamic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileDynamic"><i class="fas fa-user-cog"></i> Profile</a>`;
+            loginIconAvatarBtn.appendChild(newDropdown);
+            const newLogoutBtn = newDropdown.querySelector(
+              "#dropdownLogoutDynamic",
+            );
+            if (newLogoutBtn)
+              newLogoutBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                logoutUser();
+              });
+            const newProfileBtn = newDropdown.querySelector("#profileDynamic");
+            if (newProfileBtn)
+              newProfileBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Profile section (demo)");
+              });
+          } else {
+            loginIconAvatarBtn.classList.remove("user-avatar");
+            loginIconAvatarBtn.innerHTML = `<i class="fas fa-sign-in-alt" id="avatarIcon"></i><div class="avatar-dropdown" id="avatarDropdown"><a href="#" id="dropdownLogoutStatic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileStatic"><i class="fas fa-user-cog"></i> Profile</a></div>`;
+            const staticLogout = document.getElementById(
+              "dropdownLogoutStatic",
+            );
+            if (staticLogout)
+              staticLogout.addEventListener("click", (e) => {
+                e.preventDefault();
+                logoutUser();
+              });
+            const staticProfile = document.getElementById("profileStatic");
+            if (staticProfile)
+              staticProfile.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Profile demo");
+              });
+          }
+        }
+        renderMobileDrawer();
+      }
+
+      function renderMobileDrawer() {
+        if (!mobileContent) return;
+        if (isLoggedIn && currentUserEmail) {
+          const firstLetter = currentUserEmail.charAt(0).toUpperCase();
+          mobileContent.innerHTML = `
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">${firstLetter}</div>
+            <div class="mobile-user-details">
+              <p>${currentUserEmail}</p>
+              <span>Secure QR Plan</span>
+            </div>
+          </div>
+          <ul class="mobile-nav-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobSmartSub">
+              <a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#SmartFeatures"><i class="fas fa-microchip"></i> Smart Features</a></li>
+                <li><a href="index.html#QrProducts"><i class="fas fa-cubes"></i> QR Safety Products</a></li>
+                <li><a href="index.html#QRESS"><i class="fas fa-truck-fast"></i> Emergency & Safety Services</a></li>
+                <li><a href="index.html#QRUC"><i class="fas fa-chart-simple"></i> QR Use Cases</a></li>
+                <li><a href="index.html#ESS"><i class="fas fa-bolt"></i> QR Emergency Smart Services</a></li>
+              </ul>
+            </li>
+            <li class="mobile-has-submenu" id="mobIdentSub">
+              <a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#HOME"><i class="fas fa-id-card"></i> Digital Identity</a></li>
+                <li><a href="index.html#AboutUs"><i class="fas fa-shield-heart"></i> Privacy Shield</a></li>
+                <li><a href="index.html#FAQ"><i class="fas fa-circle-info"></i> Identity FAQ</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          </ul>
+          <button class="mobile-login-btn mobile-logout-btn" id="mobileLogoutAction"><i class="fas fa-sign-out-alt"></i> Login</button>
+        `;
+          document
+            .getElementById("mobileLogoutAction")
+            ?.addEventListener("click", () => logoutUser());
+          const mobSmart = document.getElementById("mobSmartSub");
+          if (mobSmart)
+            mobSmart
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobSmart.classList.toggle("open");
+              });
+          const mobIdent = document.getElementById("mobIdentSub");
+          if (mobIdent)
+            mobIdent
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobIdent.classList.toggle("open");
+              });
+        } else {
+          mobileContent.innerHTML = `
+          <ul class="mobile-nav-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobSmartSubOut">
+              <a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#SmartFeatures"><i class="fas fa-microchip"></i> Smart Features</a></li>
+                <li><a href="#QrProducts"><i class="fas fa-cubes"></i> QR Safety Products</a></li>
+                <li><a href="#QRESS"><i class="fas fa-truck-fast"></i> Emergency & Safety Services</a></li>
+                <li><a href="#QRUC"><i class="fas fa-chart-simple"></i> QR Use Cases</a></li>
+                <li><a href="#ESS"><i class="fas fa-bolt"></i> QR Emergency Smart Services</a></li>
+              </ul>
+            </li>
+            <li class="mobile-has-submenu" id="mobIdentSubOut">
+              <a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="#HOME"><i class="fas fa-id-card"></i> Digital Identity</a></li>
+                <li><a href="#AboutUs"><i class="fas fa-shield-heart"></i> Privacy Shield</a></li>
+                <li><a href="#FAQ"><i class="fas fa-circle-info"></i> Identity FAQ</a></li>
+              </ul>
+            </li>
+            <li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          </ul>
+          <button class="mobile-login-btn" id="mobileLoginDrawerBtn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>
+        `;
+          const mobileLoginDrawer = document.getElementById(
+            "mobileLoginDrawerBtn",
+          );
+          if (mobileLoginDrawer)
+            mobileLoginDrawer.addEventListener("click", () => {
+              closeDrawer();
+              openPopup();
+            });
+          const mobSmartOut = document.getElementById("mobSmartSubOut");
+          if (mobSmartOut)
+            mobSmartOut
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobSmartOut.classList.toggle("open");
+              });
+          const mobIdentOut = document.getElementById("mobIdentSubOut");
+          if (mobIdentOut)
+            mobIdentOut
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobIdentOut.classList.toggle("open");
+              });
+          document.querySelectorAll(".mobile-nav-list a").forEach((link) => {
+            link.addEventListener("click", (e) => {
+              const parent = link.closest(".mobile-has-submenu");
+
+              // If it's a dropdown trigger → DO NOT close
+              if (
+                parent &&
+                link.getAttribute("href") === "javascript:void(0)"
+              ) {
+                return;
+              }
+
+              // Otherwise → close menu
+              closeDrawer();
+            });
+          });
+        }
+      }
+
+      function logoutUser() {
+        isLoggedIn = false;
+        currentUserEmail = "";
+        updateUIForAuth();
+        closeDrawer();
+        alert("You have been logged out.");
+      }
+
+      function performLogin(email, pass) {
+        if (email && pass && email.includes("@")) {
+          isLoggedIn = true;
+          currentUserEmail = email;
+          updateUIForAuth();
+          closePopupFunc();
+          alert(`Welcome back, ${email}!`);
+        } else {
+          alert("Please enter a valid email address and password.");
+        }
+      }
+
+      function openPopup() {
+        popup.classList.add("active");
+        if (mobileDrawer.classList.contains("open")) closeDrawer();
+        document.body.style.overflow = "hidden";
+      }
+      function closePopupFunc() {
+        popup.classList.remove("active");
+        document.body.style.overflow = "";
+        if (loginEmailInput) loginEmailInput.value = "";
+        if (loginPasswordInput) loginPasswordInput.value = "";
+      }
+      function closeDrawer() {
+        mobileDrawer.classList.remove("open");
+        mobileOverlay.classList.remove("overlay-visible");
+        document.body.style.overflow = "";
+      }
+      function openDrawer() {
+        mobileDrawer.classList.add("open");
+        mobileOverlay.classList.add("overlay-visible");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Event listeners
+      if (desktopLoginBtnElem)
+        desktopLoginBtnElem.addEventListener("click", openPopup);
+      if (loginIconAvatarBtn && !isLoggedIn) {
+        loginIconAvatarBtn.addEventListener("click", (e) => {
+          if (!isLoggedIn) openPopup();
+        });
+      }
+      if (submitLoginBtn) {
+        submitLoginBtn.addEventListener("click", () => {
+          const email = loginEmailInput?.value.trim() || "";
+          const pass = loginPasswordInput?.value.trim() || "";
+          performLogin(email, pass);
+        });
+      }
+      if (closePopupX) closePopupX.addEventListener("click", closePopupFunc);
+      popup.addEventListener("click", (e) => {
+        if (e.target === popup) closePopupFunc();
+      });
+
+      if (mobileMenuToggle)
+        mobileMenuToggle.addEventListener("click", openDrawer);
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", closeDrawer);
+      if (mobileOverlay) mobileOverlay.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (mobileDrawer.classList.contains("open")) closeDrawer();
+          if (popup.classList.contains("active")) closePopupFunc();
+        }
+      });
+
+      // initial render
+      updateUIForAuth();
+
+      // active nav highlight on scroll (optional)
+      const sections = document.querySelectorAll("section[id]");
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((s) => {
+          const top = s.offsetTop - 150;
+          if (pageYOffset >= top) current = s.getAttribute("id");
+        });
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${current}`)
+            link.classList.add("active");
+        });
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        /* font-family: "Inter", sans-serif; */
+        font-family: "Nunito", sans-serif;
+        background: #f2f5fa;
+        scroll-behavior: smooth;
+        min-height: 200vh;
+      }
+      /* preview content just to show spacing */
+      .preview-content {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px 24px;
+        text-align: center;
+        color: #333;
+      }
+      .preview-content h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .preview-content p {
+        color: #666;
+      }
+
+      /* ---------- HEADER (PROFESSIONAL DARK) ---------- */
+      .scankaro-header {
+        width: 100%;
+        background: #000000;
+        border-bottom: 2px solid #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .header-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .logo img {
+        height: 60px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      /* DESKTOP NAVIGATION */
+      .nav {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-item {
+        position: relative;
+      }
+      .nav-link {
+        position: relative;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        padding: 8px 4px;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -4px;
+        width: 0%;
+        height: 2px;
+        background: #3aa6ff;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .nav-link i {
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .nav-link.active {
+        font-weight: 700;
+        /* border-bottom: 2px solid #ffffff; */
+      }
+      /* DROPDOWN MENU */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        background: #111111;
+        min-width: 220px;
+        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s ease;
+        transform: translateY(10px);
+        z-index: 1020;
+        border: 1px solid #333;
+      }
+      .nav-item:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #e0e0e0;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .dropdown-menu a i {
+        width: 22px;
+        color: #005eea;
+        font-size: 15px;
+      }
+      .dropdown-menu a:hover {
+        background: #1a1a1a;
+        color: white;
+        padding-left: 26px;
+      }
+      /* RIGHT SECTION */
+      .right-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+      }
+      .desktop-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 40px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+      .desktop-login-btn:hover {
+        background: #1a4a96;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(11, 59, 130, 0.4);
+      }
+      .login-icon-btn {
+        background: #0b3b82;
+        color: #ffffff;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        position: relative;
+      }
+      .login-icon-btn.user-avatar {
+        background: #0b3b82;
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .avatar-dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: -24px;
+        background: #111111;
+        border-radius: 12px;
+        width: 180px;
+        padding: 8px 0;
+        border: 1px solid #333;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s ease;
+        z-index: 1050;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+      .login-icon-btn:hover .avatar-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .avatar-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 18px;
+        color: #e0e0e0;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .avatar-dropdown a i {
+        width: 20px;
+      }
+      .avatar-dropdown a:hover {
+        background: #1f1f1f;
+        color: white;
+      }
+      .menu-btn {
+        display: none;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+      }
+      .menu-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* RESPONSIVE: tablet & mobile — only logo + hamburger */
+      @media (max-width: 900px) {
+        .nav {
+          display: none;
+        }
+        .menu-btn {
+          display: flex;
+        }
+        .desktop-login-btn {
+          display: none !important;
+        }
+        .login-icon-btn {
+          display: none;
+        }
+        .header-container {
+          padding: 12px 24px;
+        }
+        .logo img {
+          height: 50px;
+          width: 125px;
+        }
+      }
+
+      /* MOBILE DRAWER (full navigation + socials) */
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.25s;
+      }
+      .mobile-drawer {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 280px;
+        height: 100%;
+        background: #111111;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 2001;
+        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 20px;
+        gap: 28px;
+        border-left: 1px solid #333;
+      }
+      .mobile-drawer.open {
+        right: 0;
+      }
+      .overlay-visible {
+        visibility: visible;
+        opacity: 1;
+      }
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #222;
+      }
+      .mobile-logo img {
+        height: 38px;
+      }
+      .mobile-close {
+        background: rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        font-size: 18px;
+      }
+
+      .mobile-nav-list {
+        list-style: none;
+        flex: 1;
+      }
+      .mobile-nav-list li {
+        margin-bottom: 10px;
+      }
+      .mobile-nav-list a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: 0.2s;
+      }
+      .mobile-nav-list a i {
+        width: 24px;
+        color: #045fe5;
+      }
+      .mobile-nav-list a:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .mobile-submenu {
+        list-style: none;
+        padding-left: 46px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      .mobile-has-submenu.open .mobile-submenu {
+        max-height: 300px;
+      }
+      .mobile-submenu a {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      .mobile-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        transition: 0.2s;
+      }
+      .mobile-login-btn:hover {
+        background: #1a4a96;
+      }
+      .mobile-user-info {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .mobile-user-avatar {
+        background: #0b3b82;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+        color: white;
+      }
+      .mobile-user-details p {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .mobile-user-details span {
+        font-size: 12px;
+        color: #aaa;
+      }
+      .mobile-logout-btn {
+        background: rgba(255, 70, 70, 0.2);
+        color: #ff8a8a;
+        border: 1px solid #ff5e5e;
+      }
+      .mobile-social {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 20px;
+      }
+      .mobile-social a {
+        color: #aaa;
+        font-size: 20px;
+        transition: 0.2s;
+      }
+      .mobile-social a:hover {
+        color: white;
+      }
+
+      /* LOGIN POPUP */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 3000;
+      }
+      .popup-overlay.active {
+        display: flex;
+      }
+      .popup-box {
+        background: #1a1a1a;
+        padding: 32px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        border: 1px solid #333;
+        position: relative;
+      }
+      .popup-box h3 {
+        color: white;
+        margin-bottom: 20px;
+      }
+      .popup-box input {
+        width: 100%;
+        padding: 14px 16px;
+        margin: 12px 0;
+        border: 1px solid #333;
+        border-radius: 12px;
+        background: #2a2a2a;
+        color: white;
+        outline: none;
+      }
+      .popup-box button {
+        width: 100%;
+        padding: 14px;
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+      .popup-close-x {
+        position: absolute;
+        top: 18px;
+        right: 22px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #aaa;
+        transition: 0.2s;
+      }
+      .popup-close-x:hover {
+        color: white;
+      }
+    </style>
+    <!-- ==========header============= -->
+
+    <!-- ============Aboutus============= -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=yes"
+        />
+        <title>Scan Karo Help Karo | About – Smart Vehicle Network</title>
+        <!-- Font Awesome 6 -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <!-- Google Fonts: Inter -->
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            background: #f4f7fc;
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+          }
+
+          /* ----- HERO SECTION (full width, image background) ----- */
+          .hero-about {
+            position: relative;
+            width: 100%;
+            min-height: 55vh;
+            background-image: url("https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=1600&fit=crop");
+            background-size: cover;
+            background-position: center 35%;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            isolation: isolate;
+          }
+
+          /* Dark overlay to ensure text readability */
+          .hero-about::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+              135deg,
+              rgba(0, 0, 0, 0.65) 0%,
+              rgba(0, 0, 0, 0.5) 100%
+            );
+            z-index: 1;
+          }
+
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 2.5rem 1.5rem;
+            padding-bottom: 4rem;
+          }
+
+          .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 1.2rem;
+          }
+
+          .hero-badge i {
+            font-size: 0.85rem;
+          }
+
+          .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          }
+
+          .hero-title span {
+            background: linear-gradient(120deg, #ffffff, #e0e7ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+          }
+
+          .hero-tagline {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.92);
+            font-weight: 400;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.5;
+          }
+
+          /* small wave or separator */
+          .hero-wave {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            line-height: 0;
+          }
+
+          /* main card container (the original about content) */
+          .about-wrapper {
+            max-width: 1530px;
+            padding-top: 35px;
+            width: 100%;
+            background: #ffffff;
+            /* border-radius: 2rem 2rem 2rem 2rem; */
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+          }
+
+          /* two column layout */
+          .about-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.2fr;
+            gap: 0;
+          }
+
+          /* LEFT SIDE: 3 photos (2x2 style + single wide) */
+          .image-stack {
+            background: #fefefe;
+            padding: 2rem 1.2rem 2rem 2rem;
+            border-right: 1px solid #eef2f8;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+          }
+
+          .photo-double {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+          }
+
+          .photo-single {
+            width: 100%;
+          }
+
+          .photo-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.05);
+            transition:
+              transform 0.2s ease,
+              box-shadow 0.2s;
+            border: 1px solid #eef2fa;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .photo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.12);
+          }
+
+          .stack-img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+            background: #f0f4fe;
+            transition: all 0.2s;
+          }
+
+          .photo-single .stack-img {
+            aspect-ratio: 16 / 9;
+          }
+
+          .img-caption {
+            padding: 0.6rem 0.9rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1e2a47;
+            background: #ffffff;
+            border-top: 1px solid #f0f2f5;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+
+          .img-caption i {
+            font-size: 0.7rem;
+            color: #2c6e9e;
+          }
+
+          /* RIGHT SIDE: content */
+          .content-section {
+            padding: 2.8rem 2.5rem 2.8rem 2rem;
+            background: white;
+          }
+
+          .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #eef2ff;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 1.4rem;
+            letter-spacing: -0.2px;
+          }
+
+          .badge i {
+            font-size: 0.85rem;
+          }
+
+          h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0b1120;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+          }
+
+          .highlight {
+            color: #2563eb;
+            background: linear-gradient(
+              120deg,
+              #e0e7ff 0%,
+              #e0e7ff 40%,
+              transparent 60%
+            );
+            background-repeat: no-repeat;
+            background-size: 100% 30%;
+            background-position: bottom;
+            display: inline-block;
+            padding: 0 0.1rem;
+          }
+
+          .description {
+            color: #2c3e50;
+            font-size: 0.98rem;
+            line-height: 1.55;
+            margin-bottom: 1.4rem;
+            font-weight: 400;
+          }
+
+          .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.8rem 0 1.8rem 0;
+          }
+
+          .feature-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafd;
+            padding: 8px 18px;
+            border-radius: 60px;
+            border: 1px solid #e6edf4;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #0f2b3d;
+          }
+
+          .feature-item i {
+            font-size: 1rem;
+            color: #2c6e9e;
+            width: 1.2rem;
+          }
+
+          /* simplified vision block */
+          .vision-simple {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            border-radius: 1.25rem;
+            margin: 1.6rem 0 1.6rem 0;
+            border-left: 4px solid #2563eb;
+            transition: all 0.2s;
+          }
+
+          .vision-text-simple {
+            font-weight: 500;
+            color: #0f172a;
+            line-height: 1.5;
+            font-size: 0.94rem;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .vision-text-simple i {
+            font-size: 1.3rem;
+            color: #2563eb;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+          }
+
+          .bottom-tagline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e9eef3;
+            margin-top: 0.5rem;
+          }
+
+          .pill {
+            background: #ffffff;
+            border: 1px solid #dfe7ef;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1a344d;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+          }
+
+          .pill i {
+            color: #2c6e9e;
+            font-size: 0.75rem;
+          }
+
+          /* ========= RESPONSIVENESS ========= */
+          @media (max-width: 950px) {
+            .about-grid {
+              grid-template-columns: 1fr;
+            }
+            .image-stack {
+              padding: 1.8rem;
+              border-right: none;
+              border-bottom: 1px solid #eef2f8;
+            }
+            .content-section {
+              padding: 2rem;
+            }
+            h1 {
+              font-size: 2rem;
+            }
+            .hero-title {
+              font-size: 2.5rem;
+            }
+          }
+
+          @media (max-width: 650px) {
+            .hero-about {
+              min-height: 45vh;
+            }
+            .hero-title {
+              font-size: 2rem;
+            }
+            .hero-tagline {
+              font-size: 0.95rem;
+              padding: 0 0.5rem;
+            }
+            .photo-double {
+              grid-template-columns: 1fr;
+              gap: 1rem;
+            }
+            .image-stack {
+              padding: 1.2rem;
+            }
+            .content-section {
+              padding: 1.5rem;
+            }
+            .feature-grid {
+              gap: 0.6rem;
+            }
+            .feature-item {
+              font-size: 0.75rem;
+              padding: 5px 12px;
+            }
+            .vision-text-simple {
+              flex-direction: column;
+              gap: 8px;
+            }
+            h1 {
+              font-size: 1.8rem;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .bottom-tagline {
+              gap: 8px;
+            }
+            .pill {
+              font-size: 0.7rem;
+              padding: 4px 10px;
+            }
+            .vision-simple {
+              padding: 0.9rem 1.2rem;
+            }
+            .hero-badge {
+              font-size: 0.7rem;
+              padding: 0.3rem 1rem;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <!-- ========== HERO SECTION WITH BACKGROUND IMAGE & ABOUT HEADING ========== -->
+        <section class="hero-about">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i class="fas fa-car-side"></i> <span>Smart Vehicle Network</span>
+            </div>
+            <h1 class="hero-title">
+              About <br />
+              <span>Scan Karo Help Karo</span>
+            </h1>
+            <p class="hero-tagline">
+              Connecting people & vehicles — one scan away. Fast, private, and
+              built for modern cities.
+            </p>
+          </div>
+          <!-- subtle wave separator (optional, smooth transition) -->
+          <svg
+            class="hero-wave"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="#ffffff"
+              fill-opacity="1"
+              d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
+            ></path>
+          </svg>
+        </section>
+
+        <!-- main about card (content + left images) -->
+        <div class="about-wrapper">
+          <div class="about-grid">
+            <!-- LEFT SIDE: 3 photos (2x2 style + single wide) -->
+            <div class="image-stack">
+              <div class="photo-double">
+                <div class="photo-card">
+                  <img
+                    class="stack-img"
+                    src="Photos/03.png"
+                    alt="Bag Tag QR"
+                    loading="lazy"
+                  />
+                  <div class="img-caption">
+                    <i class="fas fa-city"></i>Bag Tag QR
+                  </div>
+                </div>
+                <div class="photo-card">
+                  <img
+                    class="stack-img"
+                    src="Photos/dog_1.jpg.jpeg"
+                    alt="Collar QR Tag"
+                    loading="lazy"
+                  />
+                  <div class="img-caption">
+                    <i class="fas fa-building"></i>Collar QR Tag
+                  </div>
+                </div>
+              </div>
+              <div class="photo-single">
+                <div class="photo-card">
+                  <img
+                    class="stack-img"
+                    src="Photos/Image-2.png"
+                    alt="Busy market street with vehicles & community"
+                    loading="lazy"
+                  />
+                  <div class="img-caption">
+                    <i class="fas fa-store"></i>How Security Works
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT SIDE: about content -->
+            <div class="content-section">
+              <div class="badge">
+                <i class="fas fa-qrcode"></i>
+                <span>SMART VEHICLE NETWORK</span>
+              </div>
+              <h1>Scan Karo <span class="highlight">Help Karo</span></h1>
+
+              <p class="description">
+                A smart QR-based solution designed to solve everyday
+                vehicle-related problems in a simple and effective way. By
+                placing a unique QR code sticker on your vehicle, anyone can
+                scan it using their smartphone and instantly connect with you
+                <strong>without accessing your personal details</strong>. It
+                bridges the communication gap between vehicle owners and others
+                in situations where quick contact is necessary.
+              </p>
+
+              <div class="feature-grid">
+                <div class="feature-item">
+                  <i class="fas fa-parking"></i> Wrong parking
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-truck-moving"></i> Blocked vehicles
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-ambulance"></i> Emergencies
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-building"></i> Residential areas
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-chalkboard-user"></i> College campuses
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-chart-line"></i> Office parking
+                </div>
+              </div>
+
+              <p class="description" style="margin-bottom: 0.5rem">
+                Whether it’s in busy markets, office parking areas, residential
+                societies, or college campuses, the system ensures that help is
+                always just <strong>one scan away</strong> — fast, secure, and
+                contactless. Everyday stress from blocked driveways or misplaced
+                vehicles disappears because connection happens instantly.
+              </p>
+
+              <!-- simplified vision block -->
+              <div class="vision-simple">
+                <div class="vision-text-simple">
+                  <i class="fas fa-eye"></i>
+                  <span
+                    ><strong>Our vision</strong> — Build a large-scale smart
+                    vehicle contact network across cities, making vehicles more
+                    connected and people more responsible. Scan Karo Help Karo
+                    is a practical step toward smarter, safer urban mobility:
+                    affordable, easy to use, and privacy-first.</span
+                  >
+                </div>
+              </div>
+
+              <div class="bottom-tagline">
+                <div class="pill"><i class="fas fa-tag"></i> Affordable</div>
+                <div class="pill">
+                  <i class="fas fa-hand-peace"></i> Easy to use
+                </div>
+                <div class="pill">
+                  <i class="fas fa-shield-alt"></i> Privacy-first
+                </div>
+                <div class="pill"><i class="fas fa-bolt"></i> Contactless</div>
+                <div class="pill">
+                  <i class="fas fa-network-wired"></i> City-scale network
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+    <!-- ===========aboutus============ -->
+    <!-- =============QR Use Cases============== -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <title>QR Use Cases | Smart Cards - Fully Responsive</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          body {
+            background: #eef2f8;
+            font-family: "Inter", sans-serif;
+          }
+        </style>
+      </head>
+      <body>
+        <section
+          class="qr-use-cases"
+          id="QRUC"
+          style="
+            display: block;
+            width: 100%;
+            padding: 60px 6%;
+            background: #f8fafc;
+            font-family: &quot;Inter&quot;, system-ui, sans-serif;
+          "
+        >
+          <style>
+            .qr-use-cases {
+              --primary: #3b5eff;
+              --primary-dark: #2c4ad6;
+              --primary-soft: #eef2ff;
+              --gray-light: #f1f5f9;
+              --card-shadow:
+                0 12px 28px -8px rgba(0, 0, 0, 0.06),
+                0 2px 4px rgba(0, 0, 0, 0.02);
+              --radius-card: 28px;
+            }
+            .qr-use-cases .top {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              gap: 18px;
+              margin-bottom: 48px;
+            }
+            .qr-use-cases .title {
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              font-size: 26px;
+              font-weight: 700;
+              letter-spacing: -0.4px;
+              color: #0a1a2f;
+            }
+            .qr-use-cases .bar {
+              width: 6px;
+              height: 34px;
+              background: var(--primary);
+              border-radius: 20px;
+            }
+            .qr-use-cases .menu {
+              display: flex;
+              gap: 28px;
+              background: white;
+              padding: 6px 12px;
+              border-radius: 60px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            }
+            .qr-use-cases .menu span {
+              cursor: pointer;
+              font-size: 14px;
+              font-weight: 600;
+              padding: 8px 18px;
+              border-radius: 40px;
+              transition: all 0.2s;
+              color: #5b6e8c;
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: transparent;
+            }
+            .qr-use-cases .menu span i {
+              font-size: 15px;
+            }
+            .qr-use-cases .menu .active {
+              background: var(--primary);
+              color: white;
+              box-shadow: 0 4px 8px rgba(59, 94, 255, 0.2);
+            }
+            .qr-use-cases .more {
+              background: white;
+              color: var(--primary);
+              padding: 10px 24px;
+              border-radius: 40px;
+              font-size: 14px;
+              font-weight: 600;
+              text-decoration: none;
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+              transition: all 0.2s;
+              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+              border: 1px solid #e2e8f0;
+            }
+            .qr-use-cases .more:hover {
+              background: var(--primary);
+              color: white;
+              border-color: var(--primary);
+              transform: translateX(3px);
+            }
+
+            /* GRID: 4 columns on desktop, responsive breakpoints */
+            .qr-use-cases .grid {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 28px;
+              margin-top: 8px;
+            }
+
+            /* card container */
+            .qr-use-cases .card {
+              background: transparent;
+              perspective: 1600px;
+              cursor: pointer;
+              min-width: 0; /* prevents overflow */
+            }
+            .qr-use-cases .flipper {
+              position: relative;
+              width: 100%;
+              height: 100%;
+              transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+              transform-style: preserve-3d;
+              border-radius: var(--radius-card);
+            }
+            /* front & back */
+            .qr-use-cases .front,
+            .qr-use-cases .back {
+              position: relative;
+              width: 100%;
+              background: white;
+              border-radius: var(--radius-card);
+              backface-visibility: hidden;
+              overflow: hidden;
+              box-shadow: var(--card-shadow);
+              transition: all 0.2s;
+            }
+            .qr-use-cases .front {
+              transform: rotateY(0deg);
+            }
+            .qr-use-cases .back {
+              position: absolute;
+              top: 0;
+              left: 0;
+              transform: rotateY(180deg);
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              padding: 28px 22px;
+              background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+              border: 1px solid rgba(59, 94, 255, 0.08);
+            }
+            /* Hover flip effect */
+            .qr-use-cases .card:hover .flipper {
+              transform: rotateY(180deg);
+            }
+            /* front image & content */
+            .qr-use-cases .front-img {
+              width: 100%;
+              height: 170px;
+              object-fit: cover;
+              transition: transform 0.4s;
+              display: block;
+            }
+            .qr-use-cases .card-content {
+              padding: 22px 20px 26px;
+            }
+            .qr-use-cases .name {
+              font-size: 13px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.8px;
+              color: #5b6e8c;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+            }
+            .qr-use-cases .price {
+              font-size: 22px;
+              font-weight: 800;
+              color: #0f172a;
+              line-height: 1.25;
+              word-break: break-word;
+            }
+            /* back side refined */
+            .qr-use-cases .back-title {
+              font-size: 22px;
+              font-weight: 800;
+              margin-bottom: 12px;
+              color: #0f172a;
+            }
+            .qr-use-cases .back-desc {
+              font-size: 14px;
+              line-height: 1.45;
+              color: #334155;
+              margin-bottom: 20px;
+            }
+            .qr-use-cases .info-list {
+              list-style: none;
+              margin-top: 6px;
+              width: 100%;
+            }
+            .qr-use-cases .info-list li {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              font-size: 13px;
+              padding: 6px 0;
+              color: #1e293b;
+              font-weight: 500;
+              border-bottom: 1px solid #f1f5f9;
+            }
+            .qr-use-cases .info-list li:last-child {
+              border-bottom: none;
+            }
+            .qr-use-cases .info-list li i {
+              width: 20px;
+              font-size: 13px;
+              color: var(--primary);
+              flex-shrink: 0;
+            }
+            .qr-use-cases .qr-chip {
+              margin-top: 20px;
+              background: #f0f4fe;
+              border-radius: 50px;
+              padding: 8px 14px;
+              font-size: 12px;
+              font-weight: 700;
+              color: var(--primary);
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              width: fit-content;
+            }
+            /* color variants */
+            .qr-use-cases .front-car {
+              background: #fff9f8;
+              border-bottom: 3px solid #f2b3b3;
+            }
+            .qr-use-cases .front-bike {
+              background: #f6fdf2;
+              border-bottom: 3px solid #b4d98a;
+            }
+            .qr-use-cases .front-pet {
+              background: #f6f9ff;
+              border-bottom: 3px solid #a9c0ea;
+            }
+            .qr-use-cases .front-luggage {
+              background: #fffbf0;
+              border-bottom: 3px solid #e3c77d;
+            }
+
+            /* ZOOM animation */
+            .qr-use-cases .card.zoom-effect {
+              animation: cardPop 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+            }
+            @keyframes cardPop {
+              0% {
+                transform: scale(1);
+                z-index: 2;
+              }
+              50% {
+                transform: scale(1.04);
+                box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.2);
+              }
+              100% {
+                transform: scale(1);
+                z-index: 5;
+              }
+            }
+
+            /* ========== COMPLETE RESPONSIVE FIXES ========== */
+            /* Desktop default: 4 columns, all content visible */
+
+            /* Tablet Landscape (1024px - 1200px): still 4 columns but smaller gap */
+            @media (max-width: 1200px) and (min-width: 881px) {
+              .qr-use-cases .grid {
+                gap: 20px;
+              }
+              .qr-use-cases .front-img {
+                height: 155px;
+              }
+              .qr-use-cases .price {
+                font-size: 20px;
+              }
+              .qr-use-cases .back-title {
+                font-size: 20px;
+              }
+              .qr-use-cases .back {
+                padding: 22px 18px;
+              }
+            }
+
+            /* Tablet Portrait (768px - 880px): 2 columns, cards stack nicely */
+            @media (max-width: 880px) {
+              .qr-use-cases {
+                padding: 50px 5% !important;
+              }
+              .qr-use-cases .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+              }
+              .qr-use-cases .top {
+                margin-bottom: 36px;
+                flex-direction: row;
+                flex-wrap: wrap;
+              }
+              .qr-use-cases .menu {
+                gap: 12px;
+                padding: 5px 16px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                max-width: 100%;
+              }
+              .qr-use-cases .menu span {
+                padding: 8px 20px;
+                font-size: 14px;
+                white-space: nowrap;
+                flex-shrink: 0;
+              }
+              .qr-use-cases .front-img {
+                height: 180px;
+              }
+              .qr-use-cases .price {
+                font-size: 20px;
+              }
+              .qr-use-cases .back-title {
+                font-size: 20px;
+              }
+            }
+
+            /* Mobile Large (550px - 767px): 2 columns, adjust sizes */
+            @media (max-width: 767px) {
+              .qr-use-cases {
+                padding: 40px 4% !important;
+              }
+              .qr-use-cases .grid {
+                gap: 18px;
+              }
+              .qr-use-cases .title {
+                font-size: 22px;
+              }
+              .qr-use-cases .bar {
+                height: 28px;
+              }
+              .qr-use-cases .front-img {
+                height: 150px;
+              }
+              .qr-use-cases .card-content {
+                padding: 16px 16px 20px;
+              }
+              .qr-use-cases .price {
+                font-size: 18px;
+              }
+              .qr-use-cases .name {
+                font-size: 11px;
+              }
+              .qr-use-cases .back {
+                padding: 18px 16px;
+              }
+              .qr-use-cases .back-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+              }
+              .qr-use-cases .back-desc {
+                font-size: 12px;
+                margin-bottom: 14px;
+                /* display: none; */
+              }
+              .qr-use-cases .info-list li {
+                font-size: 11px;
+                padding: 5px 0;
+                gap: 8px;
+              }
+              .qr-use-cases .info-list li i {
+                font-size: 11px;
+                width: 18px;
+              }
+              .qr-use-cases .qr-chip {
+                margin-top: 14px;
+                padding: 6px 12px;
+                font-size: 10px;
+              }
+              .qr-use-cases .menu {
+                gap: 8px;
+                padding: 4px 12px;
+              }
+              .qr-use-cases .menu span {
+                padding: 6px 14px;
+                font-size: 12px;
+              }
+              .qr-use-cases .menu span i {
+                font-size: 12px;
+              }
+            }
+
+            /* Mobile Small (480px and below): 2 columns but more compact */
+            @media (max-width: 550px) {
+              .qr-use-cases .grid {
+                gap: 14px;
+              }
+              .qr-use-cases .front-img {
+                height: 130px;
+              }
+              .qr-use-cases .card-content {
+                padding: 12px 12px 16px;
+              }
+              .qr-use-cases .price {
+                font-size: 16px;
+              }
+              .qr-use-cases .name {
+                font-size: 10px;
+                letter-spacing: 0.5px;
+              }
+              .qr-use-cases .name i {
+                font-size: 10px;
+              }
+              .qr-use-cases .back {
+                padding: 14px 12px;
+              }
+              .qr-use-cases .back-title {
+                font-size: 16px;
+                margin-bottom: 6px;
+              }
+              .qr-use-cases .back-desc {
+                font-size: 11px;
+                margin-bottom: 10px;
+                line-height: 1.4;
+                /* display: none; */
+              }
+              .qr-use-cases .info-list li {
+                font-size: 10px;
+                padding: 4px 0;
+                gap: 6px;
+                display: none;
+              }
+              .qr-use-cases .info-list li i {
+                font-size: 10px;
+                width: 16px;
+              }
+              .qr-use-cases .qr-chip {
+                margin-top: 10px;
+                padding: 5px 10px;
+                font-size: 9px;
+                gap: 6px;
+              }
+              .qr-use-cases .qr-chip i {
+                font-size: 9px;
+              }
+              .qr-use-cases .menu span {
+                padding: 5px 12px;
+                font-size: 11px;
+              }
+              .qr-use-cases .menu span i {
+                font-size: 10px;
+              }
+              .qr-use-cases .title {
+                font-size: 20px;
+              }
+            }
+
+            /* Extra small devices (below 400px): ensure no overflow */
+            @media (max-width: 400px) {
+              .qr-use-cases .front-img {
+                height: 110px;
+              }
+              .qr-use-cases .price {
+                font-size: 14px;
+              }
+              .qr-use-cases .back-title {
+                font-size: 14px;
+              }
+              .qr-use-cases .back-desc {
+                font-size: 10px;
+                /* display: none; */
+              }
+              .qr-use-cases .info-list li {
+                font-size: 9px;
+                display: none;
+              }
+            }
+
+            /* fix for card height equality */
+            .qr-use-cases .card,
+            .qr-use-cases .flipper,
+            .qr-use-cases .front,
+            .qr-use-cases .back {
+              display: flex;
+              flex-direction: column;
+            }
+            .qr-use-cases .flipper {
+              flex: 1;
+            }
+            .qr-use-cases .front,
+            .qr-use-cases .back {
+              flex: 1;
+            }
+            .qr-use-cases .front {
+              justify-content: space-between;
+            }
+
+            /* scrollbar styling for menu */
+            .qr-use-cases .menu::-webkit-scrollbar {
+              height: 4px;
+            }
+            .qr-use-cases .menu::-webkit-scrollbar-track {
+              background: #e9edf2;
+              border-radius: 10px;
+            }
+            .qr-use-cases .menu::-webkit-scrollbar-thumb {
+              background: var(--primary);
+              border-radius: 10px;
+            }
+
+            /* ensure text never overflows */
+            .qr-use-cases .back-desc,
+            .qr-use-cases .info-list li span,
+            .qr-use-cases .price {
+              overflow-wrap: break-word;
+              word-wrap: break-word;
+            }
+          </style>
+
+          <div class="top">
+            <div class="title">
+              <div class="bar"></div>
+              QR Use Cases
+            </div>
+            <div class="menu" id="categoryMenu">
+              <span data-target="car" class="active"
+                ><i class="fas fa-car"></i> CAR</span
+              >
+              <span data-target="bike"
+                ><i class="fas fa-motorcycle"></i> BIKE</span
+              >
+              <span data-target="pet"><i class="fas fa-paw"></i> PET</span>
+              <span data-target="luggage"
+                ><i class="fas fa-suitcase-rolling"></i> LUGGAGE</span
+              >
+            </div>
+          </div>
+
+          <div class="grid" id="qrCardsGrid">
+            <!-- CAR card -->
+            <div class="card" data-id="car">
+              <div class="flipper">
+                <div class="front front-car">
+                  <img
+                    class="front-img"
+                    src="Photos/black car-1.png"
+                    alt="Car QR mirror"
+                    loading="lazy"
+                  />
+                  <div class="card-content">
+                    <div class="name">
+                      <i class="fas fa-qrcode"></i> Car QR Safety
+                    </div>
+                    <div class="price">Front Mirror QR</div>
+                  </div>
+                </div>
+                <div class="back">
+                  <div class="back-title">Car Sticker</div>
+                  <div class="back-desc">
+                    Make your car instantly identifiable in any situation. A
+                    quick scan reveals essential details and lets anyone reach
+                    you without delay.
+                  </div>
+                  <ul class="info-list">
+                    <li>
+                      <i class="fas fa-clipboard-list"></i>
+                      <span>Emergency Scan</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-shield-alt"></i>
+                      <span>Owner Contact</span>
+                    </li>
+                    <!-- <li>
+                      <i class="fas fa-phone-alt"></i>
+                      <span>Parking Help</span>
+                    </li> -->
+                  </ul>
+                  <div class="qr-chip">
+                    <i class="fas fa-qrcode"></i> Get Car QR sticker
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BIKE card -->
+            <div class="card" data-id="bike">
+              <div class="flipper">
+                <div class="front front-bike">
+                  <img
+                    class="front-img"
+                    src="Photos/helmet-3.png"
+                    alt="Bike QR helmet"
+                    loading="lazy"
+                  />
+                  <div class="card-content">
+                    <div class="name">
+                      <i class="fas fa-qrcode"></i> Bike QR
+                    </div>
+                    <div class="price">Helmet / Body QR</div>
+                  </div>
+                </div>
+                <div class="back">
+                  <div class="back-title">Rider Safety Tag</div>
+                  <div class="back-desc">
+                    Add a smart safety layer to your ride. Enable instant access
+                    to rider details and emergency contact when it matters most.
+                  </div>
+                  <ul class="info-list">
+                    <!-- <li>
+                      <i class="fas fa-id-card"></i>
+                      <span>Instant Scan</span>
+                    </li> -->
+                    <li>
+                      <i class="fas fa-bell"></i>
+                      <span>Emergency Contact</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-tools"></i>
+                      <span>Accident Help</span>
+                    </li>
+                  </ul>
+                  <div class="qr-chip">
+                    <i class="fas fa-helmet-safety"></i> Bike QR Safety
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PET card -->
+            <div class="card" data-id="pet">
+              <div class="flipper">
+                <div class="front front-pet">
+                  <img
+                    class="front-img"
+                    src="Photos/dog2.jpg.jpeg"
+                    alt="Pet QR collar"
+                    loading="lazy"
+                  />
+                  <div class="card-content">
+                    <div class="name"><i class="fas fa-qrcode"></i> Pet QR</div>
+                    <div class="price">Collar QR Tag</div>
+                  </div>
+                </div>
+                <div class="back">
+                  <div class="back-title">Smart Pet ID</div>
+                  <div class="back-desc">
+                    Lost pets find their way back faster. A simple scan connects
+                    the finder directly to you with key care details.
+                  </div>
+                  <ul class="info-list">
+                    <li>
+                      <i class="fas fa-heartbeat"></i>
+                      <span>Lost Pet Help</span>
+                    </li>
+                    <!-- <li>
+                      <i class="fas fa-location-dot"></i>
+                      <span>Quick Scan</span>
+                    </li> -->
+                    <li>
+                      <i class="fas fa-notes-medical"></i>
+                      <span>Instant Return</span>
+                    </li>
+                  </ul>
+                  <div class="qr-chip">
+                    <i class="fas fa-tag"></i> Waterproof collar tag
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LUGGAGE card -->
+            <div class="card" data-id="luggage">
+              <div class="flipper">
+                <div class="front front-luggage">
+                  <img
+                    class="front-img"
+                    src="Photos/luggage.png"
+                    alt="Luggage QR bag tag"
+                    loading="lazy"
+                  />
+                  <div class="card-content">
+                    <div class="name">
+                      <i class="fas fa-qrcode"></i> Luggage QR
+                    </div>
+                    <div class="price">Bag Tag QR</div>
+                  </div>
+                </div>
+                <div class="back">
+                  <div class="back-title">Luggage QR Safety</div>
+                  <div class="back-desc">
+                    Travel with confidence. If your luggage is misplaced, anyone
+                    can scan and instantly get in touch with you.
+                  </div>
+                  <ul class="info-list">
+                    <li>
+                      <i class="fas fa-map-marked-alt"></i>
+                      <span>Lost & Found</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-exchange-alt"></i>
+                      <span>Owner Contact</span>
+                    </li>
+                    <!-- <li>
+                      <i class="fas fa-plane-departure"></i>
+                      <span>Itinerary sync</span>
+                    </li> -->
+                  </ul>
+                  <div class="qr-chip">
+                    <i class="fas fa-tag"></i> Bag Tag QR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <script>
+          (function () {
+            const menuSpans = document.querySelectorAll("#categoryMenu span");
+            const cards = document.querySelectorAll(".card");
+
+            function removeZoomFromAll() {
+              cards.forEach((card) => {
+                card.classList.remove("zoom-effect");
+              });
+            }
+
+            function zoomCardById(cardId) {
+              removeZoomFromAll();
+              const targetCard = Array.from(cards).find(
+                (card) => card.getAttribute("data-id") === cardId,
+              );
+              if (targetCard) {
+                targetCard.classList.add("zoom-effect");
+                setTimeout(() => {
+                  if (targetCard.classList.contains("zoom-effect")) {
+                    targetCard.classList.remove("zoom-effect");
+                  }
+                }, 450);
+              }
+            }
+
+            function setActiveMenu(activeSpan) {
+              menuSpans.forEach((span) => span.classList.remove("active"));
+              activeSpan.classList.add("active");
+            }
+
+            menuSpans.forEach((menu) => {
+              menu.addEventListener("click", function (e) {
+                e.preventDefault();
+                const targetValue = this.getAttribute("data-target");
+                setActiveMenu(this);
+
+                if (targetValue === "car") zoomCardById("car");
+                else if (targetValue === "bike") zoomCardById("bike");
+                else if (targetValue === "pet") zoomCardById("pet");
+                else if (targetValue === "luggage") zoomCardById("luggage");
+              });
+            });
+
+            // ensure all cards visible
+            cards.forEach((card) => {
+              card.style.display = "";
+            });
+          })();
+        </script>
+      </body>
+    </html>
+
+    <!-- =============QR Use Cases============== -->
+
+    <!-- ==========Footer============= -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <title>ScanKaro — Smart QR Safety Ecosystem</title>
+        <!-- Font Awesome 6 (local override) -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <!-- Google Font: Inter -->
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          /* ---------- GLOBAL RESET + BASE (NO EXTERNAL OVERRIDES, LOCAL CONTEXT) ---------- */
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            font-family: "Inter", sans-serif;
+            background: #f2f5fa;
+            scroll-behavior: smooth;
+          }
+
+          /* ===== FOOTER STYLES (exactly as original – responsive, centered) ===== */
+          .footer {
+            background: #000;
+            color: #fff;
+            padding: 60px 20px 20px;
+          }
+          .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+          }
+          .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            margin-bottom: 15px;
+          }
+          .footer-logo img {
+            height: 40px;
+          }
+          .footer p {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.6;
+          }
+          .footer h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+          }
+          .footer-links a {
+            display: block;
+            text-decoration: none;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+            transition: 0.2s;
+          }
+          .footer-links a:hover {
+            color: #e91e63;
+          }
+          .footer-contact div {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+          }
+          .social {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+          }
+          .social a {
+            width: 35px;
+            height: 35px;
+            background: #e91e63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+          }
+          .copyright {
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 13px;
+            color: #aaa;
+          }
+          @media (max-width: 900px) {
+            .footer-container {
+              grid-template-columns: repeat(2, 1fr);
+              text-align: center;
+            }
+            .footer-logo {
+              justify-content: center;
+            }
+            .social {
+              justify-content: center;
+            }
+            .footer-contact div {
+              justify-content: center;
+            }
+            .footer-links a {
+              text-align: left;
+              padding-left: 40px;
+            }
+          }
+          @media (max-width: 600px) {
+            .footer-container {
+              grid-template-columns: 1fr 1fr;
+              text-align: center;
+              gap: 25px;
+            }
+            .footer-container > div:first-child {
+              grid-column: span 2;
+            }
+            .footer-container > div:last-child {
+              grid-column: span 2;
+            }
+            .footer-logo {
+              justify-content: center;
+            }
+            .social {
+              justify-content: center;
+            }
+            .footer-contact div {
+              justify-content: center;
+            }
+            .footer-links a {
+              text-align: left;
+              padding-left: 40px;
+            }
+          }
+          .footer-container > div:nth-child(2),
+          .footer-container > div:nth-child(3) {
+            padding: 0 4px;
+          }
+          .footer-container > div:nth-child(3) {
+            margin-left: -32px;
+          }
+        </style>
+      </head>
+      <body>
+        <!-- ========== EXISTING FOOTER (PRESERVED FULL) ========== -->
+        <footer class="footer">
+          <div class="footer-container">
+            <div>
+              <div class="footer-logo">
+                <img
+                  src="https://scankarohelpkaro.com/images/logo.png"
+                  alt="ScanKaro"
+                />
+              </div>
+              <p>
+                Smart QR safety solutions for vehicles, pets, luggage &
+                identity. Connect instantly in emergencies with privacy-first
+                technology.
+              </p>
+              <div class="social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-twitter"></i></a
+                ><a href="#"><i class="fab fa-youtube"></i></a
+                ><a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+            <div>
+              <h3>Quick Links</h3>
+              <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="About.html">About Us</a>
+                <a href="index.html#QrProducts">QR Products</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms & Conditions</a>
+              </div>
+            </div>
+            <div>
+              <h3>Smart QR</h3>
+              <div class="footer-links">
+                <a href="index.html#SmartFeatures"
+                  ><i class="fas fa-microchip"></i> Smart Features</a
+                ><a href="index.html#QrProducts"
+                  ><i class="fas fa-cubes"></i> Safety Products</a
+                ><a href="index.html#QRESS"
+                  ><i class="fas fa-truck-fast"></i> Emergency Services</a
+                ><a href="index.html#QRUC"
+                  ><i class="fas fa-chart-simple"></i> Use Cases</a
+                ><a href="index.html#ESS"
+                  ><i class="fas fa-bolt"></i> Smart Services</a
+                >
+              </div>
+            </div>
+            <div>
+              <h3>Contact & Identity</h3>
+              <div class="footer-contact">
+                <div><i class="fa fa-phone"></i> +91 90000 00000</div>
+                <div><i class="fa fa-envelope"></i> support@scankaro.com</div>
+                <div><i class="fa fa-location-dot"></i> India</div>
+                <div><i class="fa fa-id-card"></i> Digital Identity</div>
+              </div>
+            </div>
+          </div>
+          <div class="copyright">
+            © 2026 ScanKaro HelpKaro. All Rights Reserved. | QR Safety Ecosystem
+          </div>
+        </footer>
+
+        <script>
+          // ------------------ GLOBAL LOGIC (preserved original login + UI + drawer behavior) ------------------
+          let isLoggedIn = false,
+            currentUserEmail = "";
+          const desktopLoginBtn = document.getElementById("desktopLoginBtn"),
+            loginIconBtn = document.getElementById("loginIconAvatarBtn"),
+            popup = document.getElementById("loginPopup"),
+            closePopupX = document.getElementById("closePopupX"),
+            submitLoginBtn = document.getElementById("submitLoginBtn"),
+            loginEmail = document.getElementById("loginEmail"),
+            loginPassword = document.getElementById("loginPassword");
+          const mobileMenuToggle = document.getElementById("mobileMenuToggle"),
+            mobileOverlay = document.getElementById("mobileOverlay"),
+            mobileDrawer = document.getElementById("mobileDrawer"),
+            closeDrawerBtn = document.getElementById("closeDrawerBtn"),
+            mobileDynamic = document.getElementById("mobileDynamicContent");
+
+          function updateUI() {
+            if (desktopLoginBtn)
+              desktopLoginBtn.style.display = isLoggedIn ? "none" : "flex";
+            if (loginIconBtn) {
+              if (isLoggedIn && currentUserEmail) {
+                let initial = currentUserEmail.charAt(0).toUpperCase();
+                loginIconBtn.innerHTML = "";
+                loginIconBtn.classList.add("user-avatar");
+                loginIconBtn.textContent = initial;
+                const dd = document.createElement("div");
+                dd.className = "avatar-dropdown";
+                dd.innerHTML = `<a href="#" id="dropdownLogoutDynamic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileDynamic"><i class="fas fa-user-cog"></i> Profile</a>`;
+                loginIconBtn.appendChild(dd);
+                dd.querySelector("#dropdownLogoutDynamic")?.addEventListener(
+                  "click",
+                  (e) => {
+                    e.preventDefault();
+                    logoutUser();
+                  },
+                );
+                dd.querySelector("#profileDynamic")?.addEventListener(
+                  "click",
+                  (e) => {
+                    e.preventDefault();
+                    alert("Profile dashboard (demo)");
+                  },
+                );
+              } else {
+                loginIconBtn.classList.remove("user-avatar");
+                loginIconBtn.innerHTML = `<i class="fas fa-sign-in-alt" id="avatarIcon"></i><div class="avatar-dropdown"><a href="#" id="dropdownLogoutStatic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileStatic"><i class="fas fa-user-cog"></i> Profile</a></div>`;
+                document
+                  .getElementById("dropdownLogoutStatic")
+                  ?.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    logoutUser();
+                  });
+                document
+                  .getElementById("profileStatic")
+                  ?.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    alert("Profile demo");
+                  });
+              }
+            }
+            renderMobileDrawer();
+          }
+          function renderMobileDrawer() {
+            if (!mobileDynamic) return;
+            if (isLoggedIn && currentUserEmail) {
+              let letter = currentUserEmail.charAt(0).toUpperCase();
+              mobileDynamic.innerHTML = `<div class="mobile-user-info"><div class="mobile-user-avatar">${letter}</div><div class="mobile-user-details"><p>${currentUserEmail}</p><span>Secure QR Plan</span></div></div><ul class="mobile-nav-list"><li><a href="#HOME"><i class="fas fa-home"></i> Home</a></li><li><a href="#AboutUs"><i class="fas fa-info-circle"></i> About Us</a></li><li class="mobile-has-submenu" id="mobSmartSub"><a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#SmartFeatures"> Smart Features</a></li><li><a href="#QrProducts"> QR Products</a></li><li><a href="#QRESS"> Emergency Services</a></li><li><a href="#QRUC"> Use Cases</a></li><li><a href="#ESS"> Smart Services</a></li></ul></li><li class="mobile-has-submenu" id="mobIdentSub"><a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#HOME"> Digital Identity</a></li><li><a href="#AboutUs"> Privacy Shield</a></li><li><a href="#FAQ"> Identity FAQ</a></li></ul></li><li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li></ul><button class="mobile-login-btn mobile-logout-btn" id="mobileLogoutAct"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+              document
+                .getElementById("mobileLogoutAct")
+                ?.addEventListener("click", logoutUser);
+              document
+                .getElementById("mobSmartSub")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobSmartSub")
+                    ?.classList.toggle("open");
+                });
+              document
+                .getElementById("mobIdentSub")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobIdentSub")
+                    ?.classList.toggle("open");
+                });
+            } else {
+              mobileDynamic.innerHTML = `<ul class="mobile-nav-list"><li><a href="#HOME"><i class="fas fa-home"></i> Home</a></li><li><a href="#AboutUs"><i class="fas fa-info-circle"></i> About Us</a></li><li class="mobile-has-submenu" id="mobSmartSubOut"><a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#SmartFeatures"> Smart Features</a></li><li><a href="#QrProducts"> QR Products</a></li><li><a href="#QRESS"> Emergency Services</a></li><li><a href="#QRUC"> Use Cases</a></li><li><a href="#ESS"> Smart Services</a></li></ul></li><li class="mobile-has-submenu" id="mobIdentSubOut"><a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#HOME"> Digital Identity</a></li><li><a href="#AboutUs"> Privacy Shield</a></li><li><a href="#FAQ"> Identity FAQ</a></li></ul></li><li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li></ul><button class="mobile-login-btn" id="mobileLoginDrawerBtn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
+              document
+                .getElementById("mobileLoginDrawerBtn")
+                ?.addEventListener("click", () => {
+                  closeDrawer();
+                  openPopup();
+                });
+              document
+                .getElementById("mobSmartSubOut")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobSmartSubOut")
+                    ?.classList.toggle("open");
+                });
+              document
+                .getElementById("mobIdentSubOut")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobIdentSubOut")
+                    ?.classList.toggle("open");
+                });
+            }
+          }
+          function logoutUser() {
+            isLoggedIn = false;
+            currentUserEmail = "";
+            updateUI();
+            alert("Logged out.");
+            closeDrawer();
+          }
+          function performLogin(email, pass) {
+            if (email && pass && email.includes("@")) {
+              isLoggedIn = true;
+              currentUserEmail = email;
+              updateUI();
+              closePopupFunc();
+              alert(`Welcome ${email}!`);
+            } else alert("Valid email & password required");
+          }
+          function openPopup() {
+            if (popup) {
+              popup.classList.add("active");
+              document.body.style.overflow = "hidden";
+              if (mobileDrawer?.classList.contains("open")) closeDrawer();
+            }
+          }
+          function closePopupFunc() {
+            if (popup) {
+              popup.classList.remove("active");
+              document.body.style.overflow = "";
+              if (loginEmail) loginEmail.value = "";
+              if (loginPassword) loginPassword.value = "";
+            }
+          }
+          function closeDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.remove("open");
+            if (mobileOverlay)
+              mobileOverlay.classList.remove("overlay-visible");
+            document.body.style.overflow = "";
+          }
+          function openDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.add("open");
+            if (mobileOverlay) mobileOverlay.classList.add("overlay-visible");
+            document.body.style.overflow = "hidden";
+          }
+          if (desktopLoginBtn)
+            desktopLoginBtn.addEventListener("click", openPopup);
+          if (loginIconBtn)
+            loginIconBtn.addEventListener("click", (e) => {
+              if (!isLoggedIn) openPopup();
+            });
+          if (submitLoginBtn)
+            submitLoginBtn?.addEventListener("click", () =>
+              performLogin(
+                loginEmail?.value.trim(),
+                loginPassword?.value.trim(),
+              ),
+            );
+          if (closePopupX)
+            closePopupX?.addEventListener("click", closePopupFunc);
+          if (popup)
+            popup?.addEventListener("click", (e) => {
+              if (e.target === popup) closePopupFunc();
+            });
+          if (mobileMenuToggle)
+            mobileMenuToggle?.addEventListener("click", openDrawer);
+          if (closeDrawerBtn)
+            closeDrawerBtn?.addEventListener("click", closeDrawer);
+          if (mobileOverlay)
+            mobileOverlay?.addEventListener("click", closeDrawer);
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              if (mobileDrawer?.classList.contains("open")) closeDrawer();
+              if (popup?.classList.contains("active")) closePopupFunc();
+            }
+          });
+          updateUI();
+
+          // ========== BRAND NEW FAQ: BUILD ENHANCED ACCORDION (no legacy conflict) ==========
+          const faqData = [
+            {
+              question: "How does ScanKaro QR ensure data privacy?",
+              answer:
+                "We use end-to-end encryption, role-based access, and auto-expiring links. Personal data is never sold, and you control what information is shared when someone scans your QR.",
+            },
+            {
+              question:
+                "Can I use the QR sticker for multiple vehicles or pets?",
+              answer:
+                "Yes! Each QR product is linked to a unique profile. You can manage multiple assets from your dashboard — vehicles, pet tags, luggage tags — all under one account.",
+            },
+            {
+              question: "What happens when someone scans my emergency QR?",
+              answer:
+                "The scanner instantly sees the safety info you've chosen (e.g., medical notes, emergency contacts). Simultaneously, you receive real-time alerts with location details.",
+            },
+            {
+              question: "Is the QR durable for outdoor conditions?",
+              answer:
+                "Absolutely. Our QR stickers and tags are weather-resistant, UV-protected, and designed for windshields, pet collars, or luggage handles — longevity guaranteed.",
+            },
+            {
+              question: "Do I need a subscription to use advanced features?",
+              answer:
+                "Basic QR linking is free forever. Premium features — real-time alerts, analytics, multiple profiles — start at just ₹199/year. No hidden fees.",
+            },
+          ];
+
+          const container = document.getElementById("dynamicFaqContainer");
+          if (container) {
+            container.innerHTML = "";
+            faqData.forEach((item, idx) => {
+              const faqItem = document.createElement("div");
+              faqItem.className = "faq-item-enhanced";
+              const uniqueId = `faqEnhanced${idx}`;
+              faqItem.innerHTML = `
+          <button class="faq-question-btn" aria-expanded="false">
+            <span>${item.question}</span>
+            <span class="faq-icon-wrapper"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="faq-answer-enhanced">
+            <p>${item.answer}</p>
+            ${idx === 2 ? "<ul><li>✅ Emergency contacts notified</li><li>📍 Live GPS location shared</li><li>🆘 Priority alert system</li></ul>" : ""}
+          </div>
+        `;
+              const btn = faqItem.querySelector(".faq-question-btn");
+              btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const isActive = faqItem.classList.contains("active");
+                document
+                  .querySelectorAll(".faq-item-enhanced")
+                  .forEach((item) => item.classList.remove("active"));
+                if (!isActive) faqItem.classList.add("active");
+              });
+              container.appendChild(faqItem);
+            });
+            // open first by default for better UX
+            if (container.children[0])
+              container.children[0].classList.add("active");
+          }
+
+          // fix missing element references for nav highlights and avoid errors
+          window.addEventListener("load", () => {
+            const sections = document.querySelectorAll(
+              "section[id], div[id='FAQ']",
+            );
+            window.addEventListener("scroll", () => {
+              let current = "";
+              sections.forEach((s) => {
+                const top = s.offsetTop - 150;
+                if (pageYOffset >= top) current = s.getAttribute("id");
+              });
+              document.querySelectorAll(".nav-link").forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${current}`)
+                  link.classList.add("active");
+              });
+            });
+          });
+        </script>
+      </body>
+    </html>
+  </body>
+</html>

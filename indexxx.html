@@ -1,0 +1,3223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>ScanKaro — Professional Header | Login Button + Avatar State</title>
+    <!-- Font Awesome 6 (free) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Font: Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: #0a0a0a;
+        min-height: 100vh;
+      }
+
+      /* ========== PROFESSIONAL DARK HEADER ========== */
+      .scankaro-header {
+        width: 100%;
+        background: #000000;
+        border-bottom: 2px solid #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .header-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      /* ----- LOGO - Using your direct original logo without any filter ----- */
+      .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .logo img {
+        height: 52px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* ----- HORIZONTAL NAVIGATION (DESKTOP) ----- */
+      .nav {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .nav-item {
+        position: relative;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        padding: 8px 4px;
+        letter-spacing: -0.2px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .nav-link i {
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .nav-link:hover {
+        opacity: 0.7;
+      }
+
+      .nav-link.active {
+        font-weight: 700;
+        border-bottom: 2px solid #ffffff;
+      }
+
+      /* ----- SERVICES DROPDOWN MENU ----- */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        background: #111111;
+        min-width: 240px;
+        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s ease;
+        transform: translateY(10px);
+        z-index: 1020;
+        border: 1px solid #333;
+      }
+
+      .nav-item:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #e0e0e0;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+
+      .dropdown-menu a i {
+        width: 22px;
+        color: #0b3b82;
+        font-size: 14px;
+      }
+
+      .dropdown-menu a:hover {
+        background: #1a1a1a;
+        color: white;
+        padding-left: 26px;
+      }
+
+      /* ----- RIGHT SECTION (Desktop: Login Button + Icon + Mobile Menu) ----- */
+      .right-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+      }
+
+      /* NEW DESKTOP LOGIN BUTTON (visible when logged out) */
+      .desktop-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 40px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        letter-spacing: -0.2px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+
+      .desktop-login-btn i {
+        font-size: 13px;
+      }
+
+      .desktop-login-btn:hover {
+        background: #1a4a96;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(11, 59, 130, 0.4);
+      }
+
+      /* Login icon button (avatar area) */
+      .login-icon-btn {
+        background: #0b3b82;
+        color: #ffffff;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        position: relative;
+      }
+
+      .login-icon-btn:hover {
+        background: #1a4a96;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(11, 59, 130, 0.4);
+      }
+
+      /* Avatar style after login (shows user initial + optional badge) */
+      .login-icon-btn.user-avatar {
+        background: #0b3b82;
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      /* Small logout tooltip / dropdown on avatar click */
+      .avatar-dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        background: #111111;
+        border-radius: 12px;
+        width: 180px;
+        padding: 8px 0;
+        border: 1px solid #333;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s ease;
+        z-index: 1050;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .login-icon-btn:hover .avatar-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .avatar-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 18px;
+        color: #e0e0e0;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: 0.2s;
+      }
+
+      .avatar-dropdown a i {
+        width: 20px;
+        font-size: 14px;
+      }
+
+      .avatar-dropdown a:hover {
+        background: #1f1f1f;
+        color: white;
+      }
+
+      /* Mobile menu button (hidden on desktop) */
+      .menu-btn {
+        display: none;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: background 0.2s;
+      }
+
+      .menu-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1000px) {
+        .header-container {
+          padding: 12px 24px;
+          gap: 20px;
+        }
+        .nav {
+          gap: 20px;
+        }
+        .nav-link {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 850px) {
+        .nav {
+          gap: 16px;
+        }
+        .nav-link {
+          font-size: 13px;
+        }
+        .desktop-login-btn {
+          padding: 6px 14px;
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 780px) {
+        .nav {
+          display: none;
+        }
+        .menu-btn {
+          display: flex;
+        }
+        .logo img {
+          height: 44px;
+        }
+        /* On mobile, we also hide desktop login button? Better to hide it since drawer has login */
+        .desktop-login-btn {
+          display: none !important;
+        }
+      }
+
+      @media (max-width: 550px) {
+        .header-container {
+          padding: 10px 20px;
+        }
+        .logo img {
+          height: 40px;
+        }
+        .login-icon-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 16px;
+          display: none;
+        }
+      }
+
+      /* ========= MOBILE DRAWER ========= */
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.25s;
+      }
+
+      .mobile-drawer {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 280px;
+        height: 100%;
+        background: #111111;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 2001;
+        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px;
+        gap: 28px;
+        border-left: 1px solid #333;
+      }
+
+      .mobile-drawer.open {
+        right: 0;
+      }
+
+      .overlay-visible {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #222;
+      }
+
+      .mobile-logo img {
+        height: 38px;
+      }
+
+      .mobile-close {
+        background: rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        font-size: 20px;
+      }
+
+      .mobile-nav-list {
+        list-style: none;
+        flex: 1;
+      }
+
+      .mobile-nav-list li {
+        margin-bottom: 12px;
+      }
+
+      .mobile-nav-list a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        font-size: 15px;
+        font-weight: 500;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: 0.2s;
+      }
+
+      .mobile-nav-list a i {
+        width: 24px;
+        color: #0b3b82;
+      }
+
+      .mobile-nav-list a:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .mobile-nav-list .active-mob {
+        background: #0b3b82;
+        color: white;
+      }
+
+      .mobile-nav-list .active-mob i {
+        color: white;
+      }
+
+      .mobile-submenu {
+        list-style: none;
+        padding-left: 46px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .mobile-has-submenu.open .mobile-submenu {
+        max-height: 320px;
+      }
+
+      .mobile-submenu a {
+        font-size: 13px;
+        padding: 8px 14px;
+      }
+
+      .mobile-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      /* Logged in state for mobile drawer */
+      .mobile-user-info {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .mobile-user-avatar {
+        background: #0b3b82;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+        color: white;
+      }
+      .mobile-user-details {
+        flex: 1;
+      }
+      .mobile-user-details p {
+        color: white;
+        font-weight: 600;
+      }
+      .mobile-user-details span {
+        font-size: 12px;
+        color: #aaa;
+      }
+      .mobile-logout-btn {
+        background: rgba(255, 70, 70, 0.2);
+        color: #ff8a8a;
+        border: 1px solid #ff5e5e;
+      }
+
+      .mobile-social {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .mobile-social a {
+        color: #aaa;
+        font-size: 20px;
+        transition: 0.2s;
+      }
+
+      .mobile-social a:hover {
+        color: white;
+      }
+
+      /* Login Popup */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 3000;
+      }
+
+      .popup-overlay.active {
+        display: flex;
+      }
+
+      .popup-box {
+        background: #1a1a1a;
+        padding: 32px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        border: 1px solid #333;
+        position: relative;
+      }
+
+      .popup-box h3 {
+        color: white;
+        margin-bottom: 20px;
+      }
+
+      .popup-box input {
+        width: 100%;
+        padding: 14px 16px;
+        margin: 12px 0;
+        border: 1px solid #333;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #2a2a2a;
+        color: white;
+      }
+
+      .popup-box input::placeholder {
+        color: #888;
+      }
+
+      .popup-box button {
+        width: 100%;
+        padding: 14px;
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+
+      .popup-box a {
+        display: block;
+        margin-top: 16px;
+        font-size: 13px;
+        color: #6c9eff;
+        text-decoration: none;
+      }
+
+      .popup-close-x {
+        position: absolute;
+        top: 18px;
+        right: 22px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #aaa;
+        transition: 0.2s;
+      }
+      .popup-close-x:hover {
+        color: white;
+      }
+
+      /* Main content */
+      .main-content {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 0 24px;
+      }
+
+      .features-grid {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .feature-card {
+        background: #111;
+        border-radius: 20px;
+        padding: 32px;
+        border: 1px solid #222;
+        flex: 1;
+        min-width: 200px;
+        text-align: center;
+        transition: transform 0.2s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: #0b3b82;
+      }
+
+      .feature-card i {
+        font-size: 40px;
+        color: #0b3b82;
+        margin-bottom: 16px;
+      }
+
+      .feature-card h3 {
+        color: white;
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .feature-card p {
+        color: #888;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="scankaro-header">
+      <div class="header-container">
+        <!-- LOGO -->
+        <div class="logo">
+          <img
+            src="https://scankarohelpkaro.com/images/logo.png"
+            alt="ScanKaro Logo"
+            onerror="this.src = 'https://placehold.co/52x52?text=SK'"
+          />
+        </div>
+
+        <!-- DESKTOP NAVIGATION -->
+        <div class="nav">
+          <div class="nav-item">
+            <a href="#" class="nav-link active">Home</a>
+          </div>
+          <div class="nav-item">
+            <a href="#QRESS" class="nav-link">About Us</a>
+          </div>
+          <div class="nav-item">
+            <a href="#" class="nav-link"
+              >Services <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-menu">
+              <a href="#"><i class="fas fa-qrcode"></i> QR Scanner Pro</a>
+              <a href="#"
+                ><i class="fas fa-cloud-upload-alt"></i> ScanCloud AI</a
+              >
+              <a href="#"><i class="fas fa-chart-line"></i> Analytics Suite</a>
+              <a href="#"
+                ><i class="fas fa-shield-alt"></i> Security Compliance</a
+              >
+              <a href="#"><i class="fas fa-headset"></i> 24/7 Support</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="#" class="nav-link">Contact Us</a>
+          </div>
+        </div>
+
+        <!-- RIGHT SECTION: Desktop Login Button + Icon (avatar) + Mobile Menu Toggle -->
+        <div class="right-section">
+          <!-- Desktop Login Button (visible when logged out) -->
+          <button id="desktopLoginBtn" class="desktop-login-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+
+          <!-- Icon (avatar) area: shows login icon or user avatar after login -->
+          <button class="login-icon-btn" id="loginIconAvatarBtn">
+            <i class="fas fa-sign-in-alt" id="avatarIcon"></i>
+            <div class="avatar-dropdown" id="avatarDropdown">
+              <a href="#" id="dropdownLogoutBtn"
+                ><i class="fas fa-sign-out-alt"></i> Logout</a
+              >
+              <a href="#"><i class="fas fa-user-cog"></i> Profile</a>
+              <a href="#"><i class="fas fa-key"></i> Security</a>
+            </div>
+          </button>
+
+          <button class="menu-btn" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE DRAWER -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="mobile-header">
+        <div class="mobile-logo">
+          <img src="https://scankarohelpkaro.com/images/logo.png" alt="logo" />
+        </div>
+        <div class="mobile-close" id="closeDrawerBtn">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div id="mobileDynamicContent">
+        <!-- Dynamic content (logged out view or logged in view) will be injected by JS -->
+      </div>
+      <div class="mobile-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- LOGIN POPUP -->
+    <div class="popup-overlay" id="loginPopup">
+      <div class="popup-box">
+        <div class="popup-close-x" id="closePopupX">✕</div>
+        <h3>Welcome Back</h3>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Email address"
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <button id="submitLoginBtn">Sign In →</button>
+        <a href="#">Forgot Password?</a>
+        <a href="#" style="margin-top: 8px">Create an account</a>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // ---------- STATE MANAGEMENT ----------
+        let isLoggedIn = false;
+        let currentUserEmail = "";
+
+        // DOM elements
+        const desktopLoginBtnElem = document.getElementById("desktopLoginBtn");
+        const loginIconAvatarBtn =
+          document.getElementById("loginIconAvatarBtn");
+        const avatarIconElem = document.getElementById("avatarIcon");
+        const mobileDrawerContent = document.getElementById(
+          "mobileDynamicContent",
+        );
+        const dropdownLogout = document.getElementById("dropdownLogoutBtn");
+
+        // Login popup
+        const popup = document.getElementById("loginPopup");
+        const closePopupX = document.getElementById("closePopupX");
+        const submitLoginBtn = document.getElementById("submitLoginBtn");
+        const loginEmailInput = document.getElementById("loginEmail");
+        const loginPasswordInput = document.getElementById("loginPassword");
+
+        // Mobile elements
+        const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+        const mobileOverlay = document.getElementById("mobileOverlay");
+        const mobileDrawer = document.getElementById("mobileDrawer");
+        const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+
+        // Helper: update UI based on login state
+        function updateUIForAuth() {
+          // Desktop Login Button visibility
+          if (desktopLoginBtnElem) {
+            if (isLoggedIn) {
+              desktopLoginBtnElem.style.display = "none";
+            } else {
+              desktopLoginBtnElem.style.display = "flex";
+            }
+          }
+
+          // Update avatar icon button (icon vs avatar initial)
+          if (loginIconAvatarBtn) {
+            if (isLoggedIn && currentUserEmail) {
+              // Get first letter of email or name for avatar
+              let initial = currentUserEmail.charAt(0).toUpperCase();
+              // change inner content: remove i tag, show text avatar
+              loginIconAvatarBtn.innerHTML = "";
+              loginIconAvatarBtn.classList.add("user-avatar");
+              loginIconAvatarBtn.textContent = initial;
+              // re-append dropdown (needs to be reattached)
+              const newDropdown = document.createElement("div");
+              newDropdown.className = "avatar-dropdown";
+              newDropdown.innerHTML = `<a href="#" id="dropdownLogoutBtnDynamic"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                   <a href="#"><i class="fas fa-user-cog"></i> Profile</a>
+                                   <a href="#"><i class="fas fa-key"></i> Security</a>`;
+              loginIconAvatarBtn.appendChild(newDropdown);
+              // re-attach logout event
+              const newLogoutBtn = newDropdown.querySelector(
+                "#dropdownLogoutBtnDynamic",
+              );
+              if (newLogoutBtn)
+                newLogoutBtn.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  logoutUser();
+                });
+            } else {
+              loginIconAvatarBtn.classList.remove("user-avatar");
+              loginIconAvatarBtn.innerHTML =
+                '<i class="fas fa-sign-in-alt" id="avatarIcon"></i><div class="avatar-dropdown" id="avatarDropdown"><a href="#" id="dropdownLogoutBtnStatic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#"><i class="fas fa-user-cog"></i> Profile</a><a href="#"><i class="fas fa-key"></i> Security</a></div>';
+              const staticLogout = document.getElementById(
+                "dropdownLogoutBtnStatic",
+              );
+              if (staticLogout)
+                staticLogout.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  logoutUser();
+                });
+            }
+          }
+
+          // Update mobile drawer content
+          renderMobileDrawer();
+        }
+
+        function renderMobileDrawer() {
+          if (!mobileDrawerContent) return;
+          if (isLoggedIn && currentUserEmail) {
+            const firstLetter = currentUserEmail.charAt(0).toUpperCase();
+            mobileDrawerContent.innerHTML = `
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">${firstLetter}</div>
+            <div class="mobile-user-details">
+              <p>${currentUserEmail}</p>
+              <span>Active Plan • Pro</span>
+            </div>
+          </div>
+          <ul class="mobile-nav-list">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#QRESS"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobileServicesSubMob">
+              <a href="javascript:void(0)"><i class="fas fa-concierge-bell"></i> Services <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="#"><i class="fas fa-qrcode"></i> QR Scanner Pro</a></li>
+                <li><a href="#"><i class="fas fa-cloud-upload-alt"></i> ScanCloud AI</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Analytics Suite</a></li>
+                <li><a href="#"><i class="fas fa-shield-alt"></i> Security Compliance</a></li>
+                <li><a href="#"><i class="fas fa-headset"></i> 24/7 Support</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+          <button class="mobile-login-btn mobile-logout-btn" id="mobileLogoutAction"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        `;
+            // attach logout event
+            const mobLogout = document.getElementById("mobileLogoutAction");
+            if (mobLogout)
+              mobLogout.addEventListener("click", () => logoutUser());
+            // reattach submenu toggle for services
+            const mobServices = document.getElementById("mobileServicesSubMob");
+            if (mobServices) {
+              const trigger = mobServices.querySelector("> a");
+              trigger.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobServices.classList.toggle("open");
+              });
+            }
+          } else {
+            mobileDrawerContent.innerHTML = `
+          <ul class="mobile-nav-list">
+            <li><a href="#" class="active-mob"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#QRESS"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobileServicesSubOut">
+              <a href="javascript:void(0)"><i class="fas fa-concierge-bell"></i> Services <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="#"><i class="fas fa-qrcode"></i> QR Scanner Pro</a></li>
+                <li><a href="#"><i class="fas fa-cloud-upload-alt"></i> ScanCloud AI</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Analytics Suite</a></li>
+                <li><a href="#"><i class="fas fa-shield-alt"></i> Security Compliance</a></li>
+                <li><a href="#"><i class="fas fa-headset"></i> 24/7 Support</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact Us</a></li>
+          </ul>
+          <button class="mobile-login-btn" id="mobileLoginDrawerBtn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>
+        `;
+            const mobileLoginDrawer = document.getElementById(
+              "mobileLoginDrawerBtn",
+            );
+            if (mobileLoginDrawer)
+              mobileLoginDrawer.addEventListener("click", () => {
+                closeDrawer();
+                openPopup();
+              });
+            const mobServicesOut = document.getElementById(
+              "mobileServicesSubOut",
+            );
+            if (mobServicesOut) {
+              const triggerOut = mobServicesOut.querySelector("> a");
+              triggerOut.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobServicesOut.classList.toggle("open");
+              });
+            }
+          }
+        }
+
+        function logoutUser() {
+          isLoggedIn = false;
+          currentUserEmail = "";
+          updateUIForAuth();
+          closeDrawer();
+          // simple alert notification
+          alert("You have been logged out.");
+        }
+
+        function performLogin(email, pass) {
+          // demo login - any non-empty email/pass combination works
+          if (email && pass && email.includes("@")) {
+            isLoggedIn = true;
+            currentUserEmail = email;
+            updateUIForAuth();
+            closePopupFunc();
+            alert(`Welcome back, ${email}!`);
+          } else {
+            alert("Please enter a valid email address and password.");
+          }
+        }
+
+        // Popup logic
+        function openPopup() {
+          popup.classList.add("active");
+          if (mobileDrawer.classList.contains("open")) closeDrawer();
+          document.body.style.overflow = "hidden";
+        }
+        function closePopupFunc() {
+          popup.classList.remove("active");
+          document.body.style.overflow = "";
+          loginEmailInput.value = "";
+          loginPasswordInput.value = "";
+        }
+        function closeDrawer() {
+          mobileDrawer.classList.remove("open");
+          mobileOverlay.classList.remove("overlay-visible");
+          document.body.style.overflow = "";
+        }
+        function openDrawer() {
+          mobileDrawer.classList.add("open");
+          mobileOverlay.classList.add("overlay-visible");
+          document.body.style.overflow = "hidden";
+        }
+
+        // Event listeners
+        if (desktopLoginBtnElem)
+          desktopLoginBtnElem.addEventListener("click", (e) => {
+            e.preventDefault();
+            openPopup();
+          });
+        if (loginIconAvatarBtn && !isLoggedIn) {
+          // open popup if not logged in when clicking avatar icon
+          loginIconAvatarBtn.addEventListener("click", (e) => {
+            if (!isLoggedIn) {
+              e.preventDefault();
+              openPopup();
+            }
+          });
+        }
+        if (submitLoginBtn) {
+          submitLoginBtn.addEventListener("click", () => {
+            const email = loginEmailInput.value.trim();
+            const pass = loginPasswordInput.value.trim();
+            performLogin(email, pass);
+          });
+        }
+        if (closePopupX) closePopupX.addEventListener("click", closePopupFunc);
+        popup.addEventListener("click", (e) => {
+          if (e.target === popup) closePopupFunc();
+        });
+
+        // mobile drawer controls
+        if (mobileMenuToggle)
+          mobileMenuToggle.addEventListener("click", openDrawer);
+        if (closeDrawerBtn)
+          closeDrawerBtn.addEventListener("click", closeDrawer);
+        if (mobileOverlay) mobileOverlay.addEventListener("click", closeDrawer);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            if (mobileDrawer.classList.contains("open")) closeDrawer();
+            if (popup.classList.contains("active")) closePopupFunc();
+          }
+        });
+
+        // manual reassign logout from avatar dropdown after first load
+        const initialLogout = document.getElementById("dropdownLogoutBtn");
+        if (initialLogout)
+          initialLogout.addEventListener("click", (e) => {
+            e.preventDefault();
+            logoutUser();
+          });
+
+        // initial render
+        updateUIForAuth();
+
+        // Nav active state (optional)
+        const navLinks = document.querySelectorAll(".nav .nav-link");
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            if (!this.closest(".nav-item")?.querySelector(".dropdown-menu")) {
+              navLinks.forEach((l) => l.classList.remove("active"));
+              this.classList.add("active");
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scankaro Helpkaro</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          Segoe UI,
+          Arial,
+          sans-serif;
+      }
+
+      body {
+        background: #f2f5fa;
+      }
+
+      .vehicle-hero {
+        width: 100%;
+        background: #f2f5fa;
+        padding-bottom: 100px;
+      }
+
+      /* DESKTOP HERO */
+
+      .hero-desktop {
+        position: relative;
+        height: 520px;
+        background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70")
+          center/cover no-repeat;
+      }
+
+      .hero-desktop::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+      }
+
+      .hero-text {
+        position: absolute;
+        left: 10%;
+        top: 120px;
+        color: white;
+        max-width: 820px;
+        z-index: 2;
+      }
+
+      .hero-text h1 {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 14px;
+      }
+
+      .hero-text p {
+        font-size: 18px;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      /* SEARCH CARD */
+
+      .service-card {
+        position: absolute;
+        bottom: -90px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        width: 90%;
+        max-width: 1200px;
+        border-radius: 26px;
+        padding: 30px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+      }
+
+      .services {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        text-align: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .service i {
+        font-size: 28px;
+        color: #3d63ff;
+        margin-bottom: 8px;
+      }
+
+      .service p {
+        font-size: 13px;
+      }
+
+      .service.active {
+        border-bottom: 3px solid #3d63ff;
+        padding-bottom: 10px;
+      }
+
+      /* SEARCH */
+
+      .search-row {
+        display: flex;
+        align-items: center;
+        background: #f4f6fb;
+        border-radius: 60px;
+        padding: 8px;
+        margin-top: 18px;
+      }
+
+      .ind {
+        background: white;
+        padding: 10px 16px;
+        border-radius: 40px;
+        margin-right: 10px;
+        font-weight: 600;
+      }
+
+      .search-row input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        outline: none;
+      }
+
+      .search-row button {
+        background: #4c6fff;
+        color: white;
+        border: none;
+        padding: 14px 26px;
+        border-radius: 40px;
+        font-weight: 600;
+      }
+
+      /* MOBILE */
+
+      .hero-mobile {
+        display: none;
+        padding: 20px;
+      }
+
+      /* SEARCH CARD */
+
+      .mobile-search-card {
+        background: white;
+        border: 2px solid #c8d5ff;
+        border-radius: 20px;
+        padding: 22px;
+        text-align: center;
+        margin-bottom: 30px;
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png");
+        background-size: 220px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .traffic-lights {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .traffic-lights span {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
+
+      .traffic-lights span:nth-child(1) {
+        background: #ff5f57;
+      }
+      .traffic-lights span:nth-child(2) {
+        background: #ffbd2e;
+      }
+      .traffic-lights span:nth-child(3) {
+        background: #28c840;
+      }
+
+      .mobile-search-card h2 {
+        color: #3d63ff;
+        margin-bottom: 18px;
+      }
+
+      .mobile-search {
+        display: flex;
+        align-items: center;
+        border: 2px solid #d7e1ff;
+        border-radius: 40px;
+        padding: 6px;
+        background: white;
+      }
+
+      .ind-logo {
+        background: #f3f6ff;
+        padding: 8px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .mobile-search input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        outline: none;
+      }
+
+      .mobile-search button {
+        width: 46px;
+        height: 46px;
+        border: none;
+        border-radius: 50%;
+        background: #4c6fff;
+        color: white;
+      }
+
+      /* FEATURES */
+
+      .feature-heading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: 30px 0 20px;
+      }
+
+      .feature-heading span {
+        flex: 1;
+        height: 1px;
+        background: #cfd5e6;
+      }
+
+      .feature-heading h3 {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .f-item {
+        padding: 22px 12px;
+        text-align: center;
+        position: relative;
+      }
+
+      .f-item i {
+        font-size: 28px;
+        color: #4c6fff;
+        margin-bottom: 8px;
+      }
+
+      .f-item p {
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .f-item:not(:nth-child(4n))::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: #e1e6f0;
+      }
+
+      .f-item:nth-child(-n + 4) {
+        border-bottom: 1px solid #e1e6f0;
+      }
+
+      /* INSURANCE CARD */
+
+      .insurance-card {
+        background: #eeecec;
+        border-radius: 22px;
+        padding: 20px;
+        margin-top: 30px;
+      }
+
+      .insurance-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .insurance-text h2 {
+        font-size: 34px;
+        color: #2c6cff;
+      }
+
+      .insurance-tag {
+        background: #2c6cff;
+        color: white;
+        padding: 6px 12px;
+        display: inline-block;
+        margin-top: 6px;
+      }
+
+      .insurance-top img {
+        width: 120px;
+      }
+
+      .insurance-search {
+        display: flex;
+        margin-top: 18px;
+        background: white;
+        border-radius: 40px;
+        padding: 6px;
+      }
+
+      .insurance-search input {
+        flex: 1;
+        border: none;
+        padding: 12px;
+        outline: none;
+      }
+
+      .insurance-search button {
+        background: black;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 30px;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 900px) {
+        .hero-desktop {
+          display: none;
+        }
+
+        .hero-mobile {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="vehicle-hero" id="HOME">
+      <!-- DESKTOP HERO  -->
+
+      <div class="hero-desktop">
+        <div class="hero-text">
+          <h1>Scankaro Helpkaro<br />SCAN & CONNECT INSTANTLY</h1>
+          <p>
+            Scan QR codes on Car, Bike, Pet, or Luggage to instantly view
+            emergency details and contact the owner directly in any situation.
+          </p>
+        </div>
+
+        <div class="service-card">
+          <div class="services">
+            <div class="service active">
+              <i class="fas fa-qrcode"></i>
+              <p>QR Scan</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-car"></i>
+              <p>Car Info</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-motorcycle"></i>
+              <p>Bike Info</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-paw"></i>
+              <p>Pet Safety</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-suitcase"></i>
+              <p>Luggage</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-phone"></i>
+              <p>Contact Owner</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-shield-alt"></i>
+              <p>Secure System</p>
+            </div>
+
+            <div class="service">
+              <i class="fas fa-th-large"></i>
+              <p>More</p>
+            </div>
+          </div>
+
+          <div class="search-row">
+            <div class="ind">🇮🇳 IND</div>
+            <input
+              placeholder="Scan QR or Enter Code to Get Emergency Details"
+            />
+            <button>Scan & View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE -->
+
+      <div class="hero-mobile">
+        <div class="mobile-search-card">
+          <div class="traffic-lights">
+            <span></span><span></span><span></span>
+          </div>
+
+          <h3>Scan QR Code to</h3>
+
+          <h2 id="challanText">View Emergency Details & Contact Owner</h2>
+
+          <div class="mobile-search">
+            <div class="ind-logo">IND</div>
+
+            <input placeholder="Scan QR / Enter Code" />
+
+            <button><i class="fa fa-qrcode"></i></button>
+          </div>
+        </div>
+
+        <div class="feature-heading">
+          <span></span>
+          <h3>Top Features</h3>
+          <span></span>
+        </div>
+
+        <div class="feature-grid">
+          <div class="f-item">
+            <i class="fas fa-qrcode"></i>
+            <p>QR Scan</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-car"></i>
+            <p>Car Details</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-motorcycle"></i>
+            <p>Bike Details</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-paw"></i>
+            <p>Pet Safety</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-phone"></i>
+            <p>Owner Contact</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-suitcase"></i>
+            <p>Luggage Tracking</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-shield-alt"></i>
+            <p>Secure System</p>
+          </div>
+
+          <div class="f-item">
+            <i class="fas fa-star"></i>
+            <p>Easy Use</p>
+          </div>
+        </div>
+
+        <div class="insurance-card">
+          <div class="insurance-top">
+            <div class="insurance-text">
+              <p>Scan QR to</p>
+
+              <h2>Get Emergency Help</h2>
+
+              <div class="insurance-tag">Instant Owner Contact</div>
+            </div>
+
+            <img
+              src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e"
+            />
+          </div>
+
+          <div class="insurance-search">
+            <input placeholder="Scan QR or enter code" />
+
+            <button>View Details</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const texts = [
+        "Scan QR for Emergency Details",
+        "Contact Owner Instantly",
+        "Access Car • Bike • Pet • Luggage Info",
+      ];
+
+      let i = 0;
+
+      setInterval(() => {
+        i = (i + 1) % texts.length;
+        document.getElementById("challanText").innerText = texts[i];
+      }, 2500);
+    </script>
+
+    <section class="vehicle-services-ui">
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+      />
+
+      <style>
+        .vehicle-services-ui {
+          padding: 80px 6%;
+          background: #f3f4f6;
+          font-family: Inter, Arial, sans-serif;
+        }
+
+        .vehicle-services-ui .title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 40px;
+        }
+
+        .vehicle-services-ui .title-bar {
+          width: 6px;
+          height: 32px;
+          background: #4f6cff;
+          border-radius: 4px;
+        }
+
+        .vehicle-services-ui h2 {
+          font-size: 28px;
+          color: #333;
+        }
+
+        /* CARD */
+
+        .vehicle-services-ui .card {
+          border-radius: 28px;
+          overflow: hidden;
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .vehicle-services-ui .card img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+        }
+
+        .vehicle-services-ui .content {
+          padding: 26px;
+        }
+
+        .vehicle-services-ui h3 {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+
+        .vehicle-services-ui p {
+          font-size: 14px;
+          opacity: 0.9;
+          margin-bottom: 18px;
+          line-height: 1.6;
+        }
+
+        .vehicle-services-ui .features {
+          display: flex;
+          gap: 25px;
+          font-size: 13px;
+          margin-bottom: 20px;
+        }
+
+        .vehicle-services-ui .features i {
+          margin-right: 6px;
+        }
+
+        .vehicle-services-ui .btn {
+          display: block;
+          background: rgba(255, 255, 255, 0.25);
+          padding: 12px;
+          border-radius: 30px;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 600;
+          text-decoration: none;
+          color: #fff;
+        }
+
+        /* COLORS */
+
+        .vehicle-services-ui .blue {
+          background: linear-gradient(180deg, #5c7cff, #3f60e0);
+        }
+        .vehicle-services-ui .orange {
+          background: linear-gradient(180deg, #ffb63f, #e69500);
+        }
+        .vehicle-services-ui .green {
+          background: linear-gradient(180deg, #1db57a, #109463);
+        }
+        .vehicle-services-ui .red {
+          background: linear-gradient(180deg, #ff7a6d, #e04f4f);
+        }
+
+        /* GRID DESKTOP */
+
+        .vehicle-services-ui .grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 30px;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 1000px) {
+          .vehicle-services-ui .grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        /* MOBILE SLIDER */
+
+        @media (max-width: 600px) {
+          .vehicle-services-ui {
+            padding: 0 4%;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .vehicle-services-ui .grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            scroll-snap-type: x mandatory;
+          }
+
+          .vehicle-services-ui .card {
+            min-width: 85%;
+            scroll-snap-align: start;
+          }
+        }
+      </style>
+
+      <div class="title" id="QRESS">
+        <div class="title-bar"></div>
+        <h2>QR Emergency & Safety Services</h2>
+      </div>
+
+      <div class="grid">
+        <!-- CARD 1 -->
+        <div class="card blue">
+          <img
+            src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e"
+          />
+
+          <div class="content">
+            <h3>Car QR Safety</h3>
+
+            <p>
+              Attach a QR on your car. Anyone can scan it to view emergency
+              details and contact you instantly.
+            </p>
+
+            <div class="features">
+              <span><i class="fa fa-car"></i> Car Details</span>
+              <span><i class="fa fa-phone"></i> Contact Owner</span>
+            </div>
+
+            <a href="#" class="btn">Get Car QR →</a>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="card orange">
+          <img
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70"
+          />
+
+          <div class="content">
+            <h3>Bike QR Safety</h3>
+
+            <p>
+              Place a QR on your bike so anyone can scan and contact you quickly
+              in case of emergency.
+            </p>
+
+            <div class="features">
+              <span><i class="fa fa-motorcycle"></i> Bike Details</span>
+              <span><i class="fa fa-phone"></i> Owner Contact</span>
+            </div>
+
+            <a href="#" class="btn">Get Bike QR →</a>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="card green">
+          <img
+            src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc"
+          />
+
+          <div class="content">
+            <h3>Pet QR Safety</h3>
+
+            <p>
+              Add a QR on your pet collar. If lost, anyone can scan and
+              instantly contact the owner.
+            </p>
+
+            <div class="features">
+              <span><i class="fa fa-paw"></i> Pet Details</span>
+              <span><i class="fa fa-phone"></i> Owner Contact</span>
+            </div>
+
+            <a href="#" class="btn">Get Pet QR →</a>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="card red">
+          <img
+            src="https://images.unsplash.com/photo-1622015663084-307d19eabbbf"
+          />
+
+          <div class="content">
+            <h3>Luggage QR Safety</h3>
+
+            <p>
+              Attach QR to your luggage. If lost, finder can scan and contact
+              you easily.
+            </p>
+
+            <div class="features">
+              <span><i class="fa fa-suitcase"></i> Luggage Info</span>
+              <span><i class="fa fa-phone"></i> Owner Contact</span>
+            </div>
+
+            <a href="#" class="btn">Get QR Now →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trending-cars-ui" id="QRUC">
+      <style>
+        .trending-cars-ui {
+          padding: 70px 6%;
+          background: #f3f4f6;
+          font-family: Inter, Arial, sans-serif;
+        }
+
+        /* HEADER */
+
+        .trending-cars-ui .top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+          margin-bottom: 40px;
+        }
+
+        .trending-cars-ui .title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 22px;
+          font-weight: 600;
+          color: #333;
+        }
+
+        .trending-cars-ui .bar {
+          width: 6px;
+          height: 28px;
+          background: #4f6cff;
+          border-radius: 4px;
+        }
+
+        /* MENU */
+
+        .trending-cars-ui .menu {
+          display: flex;
+          gap: 30px;
+          font-size: 14px;
+          color: #777;
+        }
+
+        .trending-cars-ui .menu span {
+          cursor: pointer;
+          position: relative;
+        }
+
+        .trending-cars-ui .menu .active {
+          color: #4f6cff;
+          font-weight: 600;
+        }
+
+        .trending-cars-ui .menu .active:after {
+          content: "";
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background: #4f6cff;
+        }
+
+        /* BUTTON */
+
+        .trending-cars-ui .more {
+          background: #e9edff;
+          color: #4f6cff;
+          padding: 10px 18px;
+          border-radius: 30px;
+          font-size: 14px;
+          text-decoration: none;
+          font-weight: 600;
+        }
+
+        /* GRID */
+
+        .trending-cars-ui .grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 25px;
+        }
+
+        /* CARD */
+
+        .trending-cars-ui .card {
+          background: white;
+          border-radius: 20px;
+          padding: 20px;
+          position: relative;
+          overflow: hidden;
+          border: 1px solid #eee;
+        }
+
+        .trending-cars-ui .card img {
+          width: 100%;
+          height: 140px;
+          object-fit: contain;
+          margin-bottom: 10px;
+        }
+
+        .trending-cars-ui .name {
+          font-size: 14px;
+          color: #666;
+        }
+
+        .trending-cars-ui .price {
+          font-size: 18px;
+          font-weight: 600;
+          margin-top: 4px;
+          color: #222;
+        }
+
+        /* COLORS */
+
+        .trending-cars-ui .c1 {
+          background: #f3e8e8;
+          border-color: #f2b3b3;
+        }
+        .trending-cars-ui .c2 {
+          background: #e9f3e3;
+          border-color: #b4d98a;
+        }
+        .trending-cars-ui .c3 {
+          background: #e8eef7;
+          border-color: #a9c0ea;
+        }
+        .trending-cars-ui .c4 {
+          background: #f4efe3;
+          border-color: #e3c77d;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+          .trending-cars-ui .grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .trending-cars-ui .grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .trending-cars-ui .menu {
+            gap: 15px;
+            font-size: 12px;
+          }
+        }
+      </style>
+
+      <div class="top">
+        <div class="title">
+          <div class="bar"></div>
+          QR Use Cases
+        </div>
+
+        <div class="menu">
+          <span class="active">CAR</span>
+          <span>BIKE</span>
+          <span>PET</span>
+          <span>LUGGAGE</span>
+        </div>
+
+        <a href="#" class="more">View More →</a>
+      </div>
+
+      <div class="grid">
+        <!-- CAR -->
+        <div class="card c1">
+          <img
+            src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e"
+          />
+          <div class="name">Car QR</div>
+          <div class="price">Front Mirror QR</div>
+        </div>
+
+        <!-- BIKE -->
+        <div class="card c2">
+          <img
+            src="https://images.unsplash.com/photo-1558981806-ec527fa84c39"
+          />
+          <div class="name">Bike QR</div>
+          <div class="price">Helmet / Body QR</div>
+        </div>
+
+        <!-- PET -->
+        <div class="card c3">
+          <img
+            src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b"
+          />
+          <div class="name">Pet QR</div>
+          <div class="price">Collar QR Tag</div>
+        </div>
+
+        <!-- LUGGAGE -->
+        <div class="card c4">
+          <img
+            src="https://images.unsplash.com/photo-1622015663084-307d19eabbbf"
+          />
+          <div class="name">Luggage QR</div>
+          <div class="price">Bag Tag QR</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="security" id="AboutUs">
+      <style>
+        .security {
+          padding: 80px 20px;
+          background: #ffffff;
+        }
+
+        .security-container {
+          max-width: 1200px;
+          margin: auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 50px;
+          align-items: center;
+        }
+
+        .security-image img {
+          width: 100%;
+          border-radius: 20px;
+        }
+
+        .security-text h2 {
+          font-size: 34px;
+          margin-bottom: 15px;
+        }
+
+        .security-text span {
+          display: block;
+          width: 60px;
+          height: 3px;
+          background: #e91e63;
+          margin-bottom: 20px;
+        }
+
+        .security-text p {
+          color: #666;
+          line-height: 1.7;
+          margin-bottom: 25px;
+        }
+
+        .security-list {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+        }
+
+        .security-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: #f5f6f8;
+          padding: 12px;
+          border-radius: 10px;
+        }
+
+        .security-item i {
+          color: #456dff;
+          font-size: 18px;
+        }
+
+        @media (max-width: 900px) {
+          .security-container {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+
+      <div class="security-container">
+        <div class="security-image">
+          <img
+            src="https://images.unsplash.com/photo-1581090700227-1e8f6d0f3d1a"
+          />
+        </div>
+
+        <div class="security-text">
+          <h2>Don't Keep Your Information Public</h2>
+          <span></span>
+          <p>
+            Scankaro Helpkaro keeps your personal details secure. Instead of
+            displaying your phone number or address publicly on vehicles or
+            belongings, the QR system safely stores your information and shares
+            it only when needed during emergencies.
+          </p>
+
+          <div class="security-list">
+            <div class="security-item">
+              <i class="fa fa-shield"></i> Secure Data
+            </div>
+            <div class="security-item">
+              <i class="fa fa-user-secret"></i> Privacy Protection
+            </div>
+            <div class="security-item">
+              <i class="fa fa-lock"></i> Encrypted Details
+            </div>
+            <div class="security-item">
+              <i class="fa fa-qrcode"></i> Smart QR Access
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products" id="QrProducts">
+      <style>
+        .products {
+          padding: 90px 20px;
+          background: #f5f6f8;
+          font-family: Inter, Arial, sans-serif;
+        }
+
+        .products-container {
+          max-width: 1200px;
+          margin: auto;
+        }
+
+        /* TITLE */
+
+        .products-title {
+          text-align: center;
+          margin-bottom: 50px;
+        }
+
+        .products-title h2 {
+          font-size: 36px;
+        }
+
+        .products-title span {
+          display: block;
+          width: 70px;
+          height: 3px;
+          background: #e91e63;
+          margin: 15px auto;
+        }
+
+        /* GRID */
+
+        .product-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 25px;
+        }
+
+        /* CARD */
+
+        .product-card {
+          background: #fff;
+          padding: 25px;
+          border-radius: 18px;
+          text-align: center;
+          transition: 0.35s;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* GLOW BORDER */
+
+        .product-card::before {
+          content: "";
+          position: absolute;
+          inset: -2px;
+          border-radius: 20px;
+          background: linear-gradient(120deg, #3aa8a1, #6b6bd6, #3aa8a1);
+          z-index: -1;
+          opacity: 0;
+          transition: 0.35s;
+        }
+
+        .product-card:hover::before {
+          opacity: 0.5;
+          filter: blur(10px);
+        }
+
+        /* IMAGE ZOOM */
+
+        .product-card img {
+          width: 100%;
+          height: 160px;
+          object-fit: contain;
+          margin-bottom: 15px;
+          transition: 0.4s;
+        }
+
+        .product-card:hover img {
+          transform: scale(1.08);
+        }
+
+        /* TITLE */
+
+        .product-card h3 {
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+
+        /* FEATURES */
+
+        .product-features {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+          margin-bottom: 15px;
+        }
+
+        .product-features span {
+          background: #1f4fa3;
+          color: #fff;
+          padding: 6px;
+          font-size: 12px;
+          border-radius: 6px;
+        }
+
+        /* BUTTON */
+
+        .view-btn {
+          margin-top: 10px;
+          display: inline-block;
+          background: #e91e63;
+          color: #fff;
+          padding: 8px 16px;
+          border-radius: 6px;
+          text-decoration: none;
+          font-size: 13px;
+          transition: 0.3s;
+        }
+
+        .view-btn:hover {
+          background: #d01754;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 1000px) {
+          .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+          .product-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 10px;
+          }
+
+          .product-card {
+            min-width: 260px;
+            scroll-snap-align: start;
+          }
+
+          .product-grid::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      </style>
+
+      <div class="products-container">
+        <div class="products-title">
+          <h2>QR SAFETY PRODUCTS</h2>
+          <span></span>
+        </div>
+
+        <div class="product-grid">
+          <!-- PRODUCT 1 -->
+          <div class="product-card">
+            <img src="https://scankarohelpkaro.com/images/product1.png" />
+
+            <h3>Car QR Safety</h3>
+
+            <div class="product-features">
+              <span>Emergency Info</span>
+              <span>Owner Contact</span>
+              <span>Quick Scan</span>
+              <span>Parking Help</span>
+            </div>
+
+            <a class="view-btn">View</a>
+          </div>
+
+          <!-- PRODUCT 2 -->
+          <div class="product-card">
+            <img src="https://scankarohelpkaro.com/images/product2.png" />
+
+            <h3>Bike QR Safety</h3>
+
+            <div class="product-features">
+              <span>Instant Scan</span>
+              <span>Owner Contact</span>
+              <span>Accident Help</span>
+              <span>Fast Response</span>
+            </div>
+
+            <a class="view-btn">View</a>
+          </div>
+
+          <!-- PRODUCT 3 -->
+          <div class="product-card">
+            <img src="https://scankarohelpkaro.com/images/product3.png" />
+
+            <h3>Pet QR Tag</h3>
+
+            <div class="product-features">
+              <span>Lost Pet Help</span>
+              <span>Owner Contact</span>
+              <span>Easy Scan</span>
+              <span>Quick Return</span>
+            </div>
+
+            <a class="view-btn">View</a>
+          </div>
+
+          <!-- PRODUCT 4 -->
+          <div class="product-card">
+            <img src="https://scankarohelpkaro.com/images/product4.png" />
+
+            <h3>Luggage QR Tag</h3>
+
+            <div class="product-features">
+              <span>Lost & Found</span>
+              <span>Owner Contact</span>
+              <span>Travel Safety</span>
+              <span>Quick Scan</span>
+            </div>
+
+            <a class="view-btn">View</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="exclusive-services" id="ESS">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+
+      <style>
+        .exclusive-services {
+          padding: 70px 6%;
+          background: #f4f6fb;
+          font-family: Inter, Arial, sans-serif;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* subtle background pattern */
+        .exclusive-services::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: url("https://www.transparenttextures.com/patterns/cubes.png");
+          opacity: 0.3;
+          z-index: 0;
+        }
+
+        /* TITLE */
+
+        .exclusive-services .title {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          margin-bottom: 45px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .exclusive-services .title span {
+          flex: 1;
+          height: 1px;
+          background: #d6dbee;
+          max-width: 150px;
+        }
+
+        .exclusive-services .title h2 {
+          font-size: 26px;
+          font-weight: 600;
+          color: #333;
+        }
+
+        /* GRID */
+
+        .exclusive-services .grid {
+          display: grid;
+          grid-template-columns: 260px 1fr 1fr 420px;
+          grid-template-rows: 160px 160px;
+          gap: 24px;
+          align-items: stretch;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* CARD */
+
+        .exclusive-services .card {
+          border-radius: 20px;
+          padding: 24px;
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* icon background */
+        .exclusive-services .card::after {
+          content: "";
+          position: absolute;
+          right: -20px;
+          bottom: -20px;
+          width: 120px;
+          height: 120px;
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 50%;
+        }
+
+        /* ICON STYLE */
+
+        .exclusive-services .card i {
+          font-size: 28px;
+          opacity: 0.9;
+          align-self: flex-end;
+        }
+
+        /* TEXT ALIGN */
+
+        .exclusive-services .card h3 {
+          margin-bottom: 6px;
+          font-size: 18px;
+        }
+
+        .exclusive-services .card p {
+          font-size: 13px;
+          opacity: 0.95;
+          line-height: 1.5;
+        }
+
+        /* COLORS */
+
+        .exclusive-services .blue {
+          background: linear-gradient(135deg, #5f7cff, #4868e4);
+          grid-row: 1 / span 2;
+          grid-column: 1;
+        }
+
+        .exclusive-services .green {
+          background: #19a06c;
+          grid-column: 2;
+          grid-row: 1;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .exclusive-services .yellow {
+          background: #f1b234;
+          grid-column: 3;
+          grid-row: 1;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .exclusive-services .red {
+          background: #e35c59;
+          grid-column: 2 / span 2;
+          grid-row: 2;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        /* BANNER */
+
+        .exclusive-services .banner {
+          background: #eadcf6;
+          border-radius: 20px;
+          padding: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          grid-column: 4;
+          grid-row: 1 / span 2;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .exclusive-services .banner::before {
+          content: "";
+          position: absolute;
+          top: -40px;
+          right: -40px;
+          width: 160px;
+          height: 160px;
+          background: rgba(123, 53, 201, 0.15);
+          border-radius: 50%;
+        }
+
+        .exclusive-services .banner img {
+          width: 180px;
+          z-index: 1;
+        }
+
+        .exclusive-services .banner h3 {
+          color: #7b35c9;
+          font-size: 26px;
+          margin-bottom: 10px;
+        }
+
+        .exclusive-services .banner p {
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+
+        .exclusive-services .banner ul {
+          font-size: 13px;
+          margin-bottom: 12px;
+        }
+
+        .exclusive-services .banner button {
+          background: #222;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 24px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+          .exclusive-services .grid {
+            grid-template-columns: 1fr 1fr;
+          }
+          .exclusive-services .red,
+          .exclusive-services .banner {
+            grid-column: span 2;
+          }
+        }
+
+        @media (max-width: 650px) {
+          .exclusive-services .grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+          }
+
+          .exclusive-services .blue,
+          .exclusive-services .green,
+          .exclusive-services .yellow,
+          .exclusive-services .red,
+          .exclusive-services .banner {
+            grid-column: auto;
+            grid-row: auto;
+          }
+
+          .exclusive-services .banner {
+            grid-column: 1 / span 2;
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .exclusive-services .banner img {
+            width: 130px;
+            margin-top: 10px;
+          }
+        }
+      </style>
+
+      <div class="title">
+        <span></span>
+        <h2>QR Emergency Smart Services</h2>
+        <span></span>
+      </div>
+
+      <div class="grid">
+        <!-- BLUE -->
+        <div class="card blue">
+          <div>
+            <h3>Create Your QR</h3>
+            <p>
+              Register QR for Car, Bike, Pet or Luggage with emergency details
+            </p>
+          </div>
+          <i class="fa-solid fa-qrcode"></i>
+        </div>
+
+        <!-- GREEN -->
+        <div class="card green">
+          <div>
+            <i class="fa-solid fa-pen"></i>
+            <p>Update Details Anytime</p>
+          </div>
+        </div>
+
+        <!-- YELLOW -->
+        <div class="card yellow">
+          <div>
+            <i class="fa-solid fa-mobile"></i>
+            <p>Scan & View Instantly</p>
+          </div>
+        </div>
+
+        <!-- RED -->
+        <div class="card red">
+          <div>
+            <h3>Instant Owner Contact</h3>
+            <p>Quickly connect during emergency, parking or lost situations</p>
+          </div>
+          <i class="fa-solid fa-phone"></i>
+        </div>
+
+        <!-- BANNER -->
+        <div class="banner">
+          <div>
+            <p>Smart safety for Car, Bike, Pet & Luggage</p>
+            <h3>QR SAFETY SYSTEM</h3>
+
+            <ul>
+              <li>✔ Emergency details in one scan</li>
+              <li>✔ Direct owner contact</li>
+              <li>✔ Works anytime</li>
+            </ul>
+
+            <button>GET YOUR QR →</button>
+          </div>
+
+          <img
+            src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="additional-features" id="SmartFeatures">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+
+      <style>
+        .additional-features {
+          padding: 100px 20px;
+          background: url("https://images.unsplash.com/photo-1518770660439-4636190af475")
+            center/cover no-repeat;
+          position: relative;
+          color: #fff;
+          font-family: Arial, sans-serif;
+        }
+
+        .additional-features::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.7);
+        }
+
+        .features-container {
+          position: relative;
+          max-width: 1200px;
+          margin: auto;
+          text-align: center;
+        }
+
+        /* TITLE */
+
+        .features-title {
+          margin-bottom: 70px;
+        }
+
+        .features-title h2 {
+          font-size: 36px;
+          letter-spacing: 2px;
+        }
+
+        .features-title span {
+          color: #ff4b3a;
+        }
+
+        .features-line {
+          width: 200px;
+          height: 2px;
+          background: #fff;
+          margin: 15px auto;
+          position: relative;
+        }
+
+        .features-line::before {
+          content: "";
+          width: 10px;
+          height: 10px;
+          background: #ff4b3a;
+          border-radius: 50%;
+          position: absolute;
+          left: 50%;
+          top: -4px;
+          transform: translateX(-50%);
+        }
+
+        /* GRID */
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 40px;
+          align-items: center;
+          position: relative;
+        }
+
+        /* CONNECTING LINE */
+
+        .features-grid::before {
+          content: "";
+          position: absolute;
+          top: 40px;
+          left: 10%;
+          width: 80%;
+          height: 2px;
+          background: #ff4b3a;
+          z-index: 0;
+        }
+
+        /* FEATURE */
+
+        .feature-item {
+          text-align: center;
+          position: relative;
+          z-index: 1;
+        }
+
+        .feature-icon {
+          width: 70px;
+          height: 70px;
+          background: #456dff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: auto;
+          font-size: 28px;
+          margin-bottom: 15px;
+        }
+
+        .feature-item h4 {
+          font-size: 15px;
+          letter-spacing: 1px;
+        }
+
+        /* TABLET */
+
+        @media (max-width: 900px) {
+          .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+          }
+
+          .features-grid::before {
+            display: none;
+          }
+        }
+
+        /* PHONE */
+
+        @media (max-width: 500px) {
+          .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+          }
+
+          .feature-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+          }
+
+          .feature-item h4 {
+            font-size: 13px;
+          }
+        }
+      </style>
+
+      <div class="features-container">
+        <div class="features-title">
+          <h2>SMART <span>FEATURES</span></h2>
+          <div class="features-line"></div>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-qrcode"></i>
+            </div>
+            <h4>QUICK SCAN</h4>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <h4>OWNER DETAILS</h4>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-phone"></i>
+            </div>
+            <h4>INSTANT CONTACT</h4>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-shield"></i>
+            </div>
+            <h4>SAFE & SECURE</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section" id="FAQ">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+
+      <style>
+        .faq-section {
+          padding: 90px 6%;
+          background: linear-gradient(135deg, #eef2ff, #f8fafc);
+          font-family: Inter, Arial, sans-serif;
+        }
+
+        /* CONTAINER */
+
+        .faq-container {
+          max-width: 900px;
+          margin: auto;
+        }
+
+        /* TITLE */
+
+        .faq-title {
+          font-size: 34px;
+          text-align: center;
+          margin-bottom: 10px;
+          font-weight: 700;
+          color: #111;
+        }
+
+        .faq-sub {
+          text-align: center;
+          color: #666;
+          margin-bottom: 35px;
+          font-size: 14px;
+        }
+
+        /* FAQ CARD */
+
+        .faq-item {
+          background: #fff;
+          border-radius: 14px;
+          margin-bottom: 14px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+          overflow: hidden;
+          transition: 0.3s;
+          border: 1px solid #eee;
+        }
+
+        /* QUESTION */
+
+        .faq-question {
+          padding: 18px 20px;
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 15px;
+          font-weight: 600;
+          color: #222;
+        }
+
+        .faq-question i {
+          color: #4f6cff;
+        }
+
+        /* ANSWER */
+
+        .faq-answer {
+          max-height: 0;
+          overflow: hidden;
+          padding: 0 20px;
+          color: #555;
+          line-height: 1.6;
+          font-size: 14px;
+          transition: max-height 0.4s ease;
+        }
+
+        /* ACTIVE */
+
+        .faq-item.active {
+          border-left: 4px solid #4f6cff;
+        }
+
+        .faq-item.active .faq-answer {
+          max-height: 220px;
+          padding: 15px 20px;
+        }
+
+        .faq-item.active .faq-icon {
+          transform: rotate(180deg);
+        }
+
+        /* ICON */
+
+        .faq-icon {
+          transition: 0.3s;
+        }
+
+        /* HOVER */
+
+        .faq-item:hover {
+          transform: translateY(-2px);
+        }
+      </style>
+
+      <div class="faq-container">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <p class="faq-sub">
+          Everything you need to know about QR Safety System
+        </p>
+
+        <!-- FAQ 1 -->
+        <div class="faq-item active">
+          <div class="faq-question">
+            <span>What is QR Safety System?</span>
+            <i class="fa fa-chevron-down faq-icon"></i>
+          </div>
+          <div class="faq-answer">
+            QR Safety System allows you to attach a QR code to your Car, Bike,
+            Pet, or Luggage. When someone scans it, they can instantly view
+            emergency details and contact the owner.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does QR code help in emergencies?</span>
+            <i class="fa fa-chevron-down faq-icon"></i>
+          </div>
+          <div class="faq-answer">
+            In case of accidents, wrong parking, or lost items, anyone can scan
+            the QR code and directly connect with the owner or emergency contact
+            without searching for numbers.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Where can I use this QR system?</span>
+            <i class="fa fa-chevron-down faq-icon"></i>
+          </div>
+          <div class="faq-answer">
+            You can use QR codes on Cars, Bikes, Pet collars, and Luggage to
+            ensure quick identification and contact in any situation.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Is my personal information सुरक्षित (safe)?</span>
+            <i class="fa fa-chevron-down faq-icon"></i>
+          </div>
+          <div class="faq-answer">
+            Yes, your data is secure. Only limited information is shown during
+            scanning, and sensitive details remain protected.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Do I need any app to scan the QR?</span>
+            <i class="fa fa-chevron-down faq-icon"></i>
+          </div>
+          <div class="faq-answer">
+            No app is required. Any smartphone camera can scan the QR code and
+            open the details instantly.
+          </div>
+        </div>
+      </div>
+
+      <script>
+        document.querySelectorAll(".faq-question").forEach((q) => {
+          q.addEventListener("click", () => {
+            let item = q.parentElement;
+
+            document.querySelectorAll(".faq-item").forEach((f) => {
+              if (f !== item) {
+                f.classList.remove("active");
+              }
+            });
+
+            item.classList.toggle("active");
+          });
+        });
+      </script>
+    </section>
+
+    <footer class="footer">
+      <style>
+        .footer {
+          background: #000;
+          color: #fff;
+          padding: 60px 20px 20px 20px;
+        }
+
+        .footer-container {
+          max-width: 1200px;
+          margin: auto;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 40px;
+        }
+
+        .footer-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+
+        .footer-logo img {
+          height: 40px;
+        }
+
+        .footer p {
+          font-size: 14px;
+          color: #ccc;
+          line-height: 1.6;
+        }
+
+        .footer h3 {
+          margin-bottom: 15px;
+          font-size: 18px;
+        }
+
+        .footer-links a {
+          display: block;
+          text-decoration: none;
+          color: #ccc;
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+
+        .footer-links a:hover {
+          color: #e91e63;
+        }
+
+        .footer-contact div {
+          font-size: 14px;
+          color: #ccc;
+          margin-bottom: 10px;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .social {
+          margin-top: 15px;
+          display: flex;
+          gap: 10px;
+        }
+
+        .social a {
+          width: 35px;
+          height: 35px;
+          background: #e91e63;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          color: #fff;
+          text-decoration: none;
+        }
+
+        .copyright {
+          text-align: center;
+          margin-top: 40px;
+          border-top: 1px solid #333;
+          padding-top: 20px;
+          font-size: 13px;
+          color: #aaa;
+        }
+
+        @media (max-width: 900px) {
+          .footer-container {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .footer-container {
+            grid-template-columns: 1fr;
+          }
+        }
+      </style>
+
+      <div class="footer-container">
+        <div>
+          <div class="footer-logo">
+            <img src="https://scankarohelpkaro.com/images/logo.png" />
+            Scankaro Helpkaro
+          </div>
+          <p>
+            Scankaro Helpkaro provides smart QR safety solutions for vehicles,
+            belongings and personal protection. Our technology connects people
+            instantly during emergencies.
+          </p>
+          <div class="social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Quick Links</h3>
+          <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">Services</a>
+            <a href="#QRESS">About Us</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Products</h3>
+          <div class="footer-links">
+            <a href="#">Car QR Safety</a>
+            <a href="#">Bike QR Safety</a>
+            <a href="#">Luggage QR</a>
+            <a href="#">Smart Doorbell</a>
+            <a href="#">Smart Card</a>
+          </div>
+        </div>
+
+        <div>
+          <h3>Contact</h3>
+          <div class="footer-contact">
+            <div><i class="fa fa-phone"></i> +91 90000 00000</div>
+            <div>
+              <i class="fa fa-envelope"></i> support@scankarohelpkaro.com
+            </div>
+            <div><i class="fa fa-location-dot"></i> India</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright">
+        © 2026 Scankaro Helpkaro. All Rights Reserved.
+      </div>
+    </footer>
+  </body>
+</html>

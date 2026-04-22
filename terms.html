@@ -1,0 +1,2445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Scankaro Helpkaro · Terms & Conditions</title>
+  </head>
+  <body>
+    <!-- HEADER ONLY (standalone) -->
+    <header class="scankaro-header">
+      <div class="header-container">
+        <!-- LOGO -->
+        <div class="logo">
+          <img
+            src="https://scankarohelpkaro.com/images/logo.png"
+            alt="ScanKaro Logo"
+            onerror="this.src = 'https://placehold.co/52x52?text=SK'"
+          />
+        </div>
+
+        <!-- DESKTOP NAVIGATION (full menu) -->
+        <div class="nav">
+          <div class="nav-item">
+            <a href="index.html" class="nav-link active">Home</a>
+          </div>
+          <div class="nav-item">
+            <a href="about.html" class="nav-link">About Us</a>
+          </div>
+          <!-- Smart QR dropdown -->
+          <div class="nav-item">
+            <a href="#" class="nav-link"
+              >Smart QR <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-menu">
+              <a href="index.html#SmartFeatures"
+                ><i class="fas fa-microchip"></i> Smart Features</a
+              >
+              <a href="index.html#QrProducts"
+                ><i class="fas fa-cubes"></i> QR Safety Products</a
+              >
+              <a href="#QRESS"
+                ><i class="fas fa-truck-fast"></i> Emergency & Safety
+                Services</a
+              >
+              <a href="index.html#QRUC"
+                ><i class="fas fa-chart-simple"></i> QR Use Cases</a
+              >
+              <a href="index.html#ESS"
+                ><i class="fas fa-bolt"></i> QR Emergency Smart Services</a
+              >
+            </div>
+          </div>
+          <!-- Identity dropdown -->
+          <div class="nav-item">
+            <a href="#" class="nav-link"
+              >Identity <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-menu">
+              <a href="index.html"
+                ><i class="fas fa-id-card"></i> Digital Identity</a
+              >
+              <a href="index.html#AboutUs"
+                ><i class="fas fa-shield-heart"></i> Privacy Shield</a
+              >
+              <a href="index.html#FAQ"
+                ><i class="fas fa-circle-info"></i> Identity FAQ</a
+              >
+            </div>
+          </div>
+          <div class="nav-item">
+            <a href="index.html#FAQ" class="nav-link">FAQ</a>
+          </div>
+        </div>
+
+        <!-- RIGHT SECTION: Login + Avatar + Hamburger -->
+        <div class="right-section">
+          <!-- <button id="desktopLoginBtn" class="desktop-login-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button> -->
+          <button class="login-icon-btn" id="loginIconAvatarBtn">
+            <i class="fas fa-sign-in-alt" id="avatarIcon"></i>
+            <div class="avatar-dropdown" id="avatarDropdown">
+              <a href="#" id="dropdownLogoutBtn"
+                ><i class="fas fa-sign-out-alt"></i> Login</a
+              >
+              <a href="#" id="profileLink"
+                ><i class="fas fa-user-cog"></i> Profile</a
+              >
+            </div>
+          </button>
+          <button class="menu-btn" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE DRAWER (contains all navigation + social media links) -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="mobile-header">
+        <div class="mobile-logo">
+          <img src="https://scankarohelpkaro.com/images/logo.png" alt="logo" />
+        </div>
+        <div class="mobile-close" id="closeDrawerBtn">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div id="mobileDynamicContent"></div>
+      <div class="mobile-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+
+    <!-- LOGIN POPUP -->
+    <div class="popup-overlay" id="loginPopup">
+      <div class="popup-box">
+        <div class="popup-close-x" id="closePopupX">✕</div>
+        <h3>Welcome Back</h3>
+        <input
+          type="email"
+          id="loginEmail"
+          placeholder="Email address"
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+          autocomplete="current-password"
+        />
+        <button id="submitLoginBtn">Sign In →</button>
+        <a
+          href="#"
+          style="
+            display: inline-block;
+            margin-top: 16px;
+            color: #6c9eff;
+            text-decoration: none;
+            font-size: 13px;
+          "
+          >Forgot Password?</a
+        >
+      </div>
+    </div>
+
+    <script>
+      // ---------- STATE MANAGEMENT ----------
+      let isLoggedIn = false;
+      let currentUserEmail = "";
+
+      // DOM elements
+      const desktopLoginBtnElem = document.getElementById("desktopLoginBtn");
+      const loginIconAvatarBtn = document.getElementById("loginIconAvatarBtn");
+      const mobileContent = document.getElementById("mobileDynamicContent");
+      const popup = document.getElementById("loginPopup");
+      const closePopupX = document.getElementById("closePopupX");
+      const submitLoginBtn = document.getElementById("submitLoginBtn");
+      const loginEmailInput = document.getElementById("loginEmail");
+      const loginPasswordInput = document.getElementById("loginPassword");
+      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+      const mobileOverlay = document.getElementById("mobileOverlay");
+      const mobileDrawer = document.getElementById("mobileDrawer");
+      const closeDrawerBtn = document.getElementById("closeDrawerBtn");
+
+      // Helper: update UI based on login state
+      function updateUIForAuth() {
+        if (desktopLoginBtnElem) {
+          desktopLoginBtnElem.style.display = isLoggedIn ? "none" : "flex";
+        }
+        // Update avatar button
+        if (loginIconAvatarBtn) {
+          if (isLoggedIn && currentUserEmail) {
+            let initial = currentUserEmail.charAt(0).toUpperCase();
+            loginIconAvatarBtn.innerHTML = "";
+            loginIconAvatarBtn.classList.add("user-avatar");
+            loginIconAvatarBtn.textContent = initial;
+            const newDropdown = document.createElement("div");
+            newDropdown.className = "avatar-dropdown";
+            newDropdown.innerHTML = `<a href="#" id="dropdownLogoutDynamic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileDynamic"><i class="fas fa-user-cog"></i> Profile</a>`;
+            loginIconAvatarBtn.appendChild(newDropdown);
+            const newLogoutBtn = newDropdown.querySelector(
+              "#dropdownLogoutDynamic",
+            );
+            if (newLogoutBtn)
+              newLogoutBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                logoutUser();
+              });
+            const newProfileBtn = newDropdown.querySelector("#profileDynamic");
+            if (newProfileBtn)
+              newProfileBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Profile section (demo)");
+              });
+          } else {
+            loginIconAvatarBtn.classList.remove("user-avatar");
+            loginIconAvatarBtn.innerHTML = `<i class="fas fa-sign-in-alt" id="avatarIcon"></i><div class="avatar-dropdown" id="avatarDropdown"><a href="#" id="dropdownLogoutStatic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileStatic"><i class="fas fa-user-cog"></i> Profile</a></div>`;
+            const staticLogout = document.getElementById(
+              "dropdownLogoutStatic",
+            );
+            if (staticLogout)
+              staticLogout.addEventListener("click", (e) => {
+                e.preventDefault();
+                logoutUser();
+              });
+            const staticProfile = document.getElementById("profileStatic");
+            if (staticProfile)
+              staticProfile.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Profile demo");
+              });
+          }
+        }
+        renderMobileDrawer();
+      }
+
+      function renderMobileDrawer() {
+        if (!mobileContent) return;
+        if (isLoggedIn && currentUserEmail) {
+          const firstLetter = currentUserEmail.charAt(0).toUpperCase();
+          mobileContent.innerHTML = `
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">${firstLetter}</div>
+            <div class="mobile-user-details">
+              <p>${currentUserEmail}</p>
+              <span>Secure QR Plan</span>
+            </div>
+          </div>
+          <ul class="mobile-nav-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobSmartSub">
+              <a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#SmartFeatures"><i class="fas fa-microchip"></i> Smart Features</a></li>
+                <li><a href="index.html#QrProducts"><i class="fas fa-cubes"></i> QR Safety Products</a></li>
+                <li><a href="index.html#QRESS"><i class="fas fa-truck-fast"></i> Emergency & Safety Services</a></li>
+                <li><a href="index.html#QRUC"><i class="fas fa-chart-simple"></i> QR Use Cases</a></li>
+                <li><a href="index.html#ESS"><i class="fas fa-bolt"></i> QR Emergency Smart Services</a></li>
+              </ul>
+            </li>
+            <li class="mobile-has-submenu" id="mobIdentSub">
+              <a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#HOME"><i class="fas fa-id-card"></i> Digital Identity</a></li>
+                <li><a href="index.html#AboutUs"><i class="fas fa-shield-heart"></i> Privacy Shield</a></li>
+                <li><a href="index.html#FAQ"><i class="fas fa-circle-info"></i> Identity FAQ</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          </ul>
+          <button class="mobile-login-btn mobile-logout-btn" id="mobileLogoutAction"><i class="fas fa-sign-out-alt"></i> Login</button>
+        `;
+          document
+            .getElementById("mobileLogoutAction")
+            ?.addEventListener("click", () => logoutUser());
+          const mobSmart = document.getElementById("mobSmartSub");
+          if (mobSmart)
+            mobSmart
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobSmart.classList.toggle("open");
+              });
+          const mobIdent = document.getElementById("mobIdentSub");
+          if (mobIdent)
+            mobIdent
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobIdent.classList.toggle("open");
+              });
+        } else {
+          mobileContent.innerHTML = `
+          <ul class="mobile-nav-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="About.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li class="mobile-has-submenu" id="mobSmartSubOut">
+              <a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="index.html#SmartFeatures"><i class="fas fa-microchip"></i> Smart Features</a></li>
+                <li><a href="#QrProducts"><i class="fas fa-cubes"></i> QR Safety Products</a></li>
+                <li><a href="#QRESS"><i class="fas fa-truck-fast"></i> Emergency & Safety Services</a></li>
+                <li><a href="#QRUC"><i class="fas fa-chart-simple"></i> QR Use Cases</a></li>
+                <li><a href="#ESS"><i class="fas fa-bolt"></i> QR Emergency Smart Services</a></li>
+              </ul>
+            </li>
+            <li class="mobile-has-submenu" id="mobIdentSubOut">
+              <a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down" style="margin-left: auto;"></i></a>
+              <ul class="mobile-submenu">
+                <li><a href="#HOME"><i class="fas fa-id-card"></i> Digital Identity</a></li>
+                <li><a href="#AboutUs"><i class="fas fa-shield-heart"></i> Privacy Shield</a></li>
+                <li><a href="#FAQ"><i class="fas fa-circle-info"></i> Identity FAQ</a></li>
+              </ul>
+            </li>
+            <li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          </ul>
+          <button class="mobile-login-btn" id="mobileLoginDrawerBtn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>
+        `;
+          const mobileLoginDrawer = document.getElementById(
+            "mobileLoginDrawerBtn",
+          );
+          if (mobileLoginDrawer)
+            mobileLoginDrawer.addEventListener("click", () => {
+              closeDrawer();
+              openPopup();
+            });
+          const mobSmartOut = document.getElementById("mobSmartSubOut");
+          if (mobSmartOut)
+            mobSmartOut
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobSmartOut.classList.toggle("open");
+              });
+          const mobIdentOut = document.getElementById("mobIdentSubOut");
+          if (mobIdentOut)
+            mobIdentOut
+              .querySelector(":scope > a")
+              ?.addEventListener("click", (e) => {
+                e.preventDefault();
+                mobIdentOut.classList.toggle("open");
+              });
+          document.querySelectorAll(".mobile-nav-list a").forEach((link) => {
+            link.addEventListener("click", (e) => {
+              const parent = link.closest(".mobile-has-submenu");
+
+              // If it's a dropdown trigger → DO NOT close
+              if (
+                parent &&
+                link.getAttribute("href") === "javascript:void(0)"
+              ) {
+                return;
+              }
+
+              // Otherwise → close menu
+              closeDrawer();
+            });
+          });
+        }
+      }
+
+      function logoutUser() {
+        isLoggedIn = false;
+        currentUserEmail = "";
+        updateUIForAuth();
+        closeDrawer();
+        alert("You have been logged out.");
+      }
+
+      function performLogin(email, pass) {
+        if (email && pass && email.includes("@")) {
+          isLoggedIn = true;
+          currentUserEmail = email;
+          updateUIForAuth();
+          closePopupFunc();
+          alert(`Welcome back, ${email}!`);
+        } else {
+          alert("Please enter a valid email address and password.");
+        }
+      }
+
+      function openPopup() {
+        popup.classList.add("active");
+        if (mobileDrawer.classList.contains("open")) closeDrawer();
+        document.body.style.overflow = "hidden";
+      }
+      function closePopupFunc() {
+        popup.classList.remove("active");
+        document.body.style.overflow = "";
+        if (loginEmailInput) loginEmailInput.value = "";
+        if (loginPasswordInput) loginPasswordInput.value = "";
+      }
+      function closeDrawer() {
+        mobileDrawer.classList.remove("open");
+        mobileOverlay.classList.remove("overlay-visible");
+        document.body.style.overflow = "";
+      }
+      function openDrawer() {
+        mobileDrawer.classList.add("open");
+        mobileOverlay.classList.add("overlay-visible");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Event listeners
+      if (desktopLoginBtnElem)
+        desktopLoginBtnElem.addEventListener("click", openPopup);
+      if (loginIconAvatarBtn && !isLoggedIn) {
+        loginIconAvatarBtn.addEventListener("click", (e) => {
+          if (!isLoggedIn) openPopup();
+        });
+      }
+      if (submitLoginBtn) {
+        submitLoginBtn.addEventListener("click", () => {
+          const email = loginEmailInput?.value.trim() || "";
+          const pass = loginPasswordInput?.value.trim() || "";
+          performLogin(email, pass);
+        });
+      }
+      if (closePopupX) closePopupX.addEventListener("click", closePopupFunc);
+      popup.addEventListener("click", (e) => {
+        if (e.target === popup) closePopupFunc();
+      });
+
+      if (mobileMenuToggle)
+        mobileMenuToggle.addEventListener("click", openDrawer);
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener("click", closeDrawer);
+      if (mobileOverlay) mobileOverlay.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if (mobileDrawer.classList.contains("open")) closeDrawer();
+          if (popup.classList.contains("active")) closePopupFunc();
+        }
+      });
+
+      // initial render
+      updateUIForAuth();
+
+      // active nav highlight on scroll (optional)
+      const sections = document.querySelectorAll("section[id]");
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((s) => {
+          const top = s.offsetTop - 150;
+          if (pageYOffset >= top) current = s.getAttribute("id");
+        });
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${current}`)
+            link.classList.add("active");
+        });
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        /* font-family: "Inter", sans-serif; */
+        font-family: "Nunito", sans-serif;
+        background: #f2f5fa;
+        scroll-behavior: smooth;
+        min-height: 200vh;
+      }
+      /* preview content just to show spacing */
+      .preview-content {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px 24px;
+        text-align: center;
+        color: #333;
+      }
+      .preview-content h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      .preview-content p {
+        color: #666;
+      }
+
+      /* ---------- HEADER (PROFESSIONAL DARK) ---------- */
+      .scankaro-header {
+        width: 100%;
+        background: #000000;
+        border-bottom: 2px solid #ffffff;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .header-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .logo img {
+        height: 60px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+      /* DESKTOP NAVIGATION */
+      .nav {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+      }
+      .nav-item {
+        position: relative;
+      }
+      .nav-link {
+        position: relative;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        padding: 8px 4px;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -4px;
+        width: 0%;
+        height: 2px;
+        background: #3aa6ff;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .nav-link i {
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      .nav-link.active {
+        font-weight: 700;
+        /* border-bottom: 2px solid #ffffff; */
+      }
+      /* DROPDOWN MENU */
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        background: #111111;
+        min-width: 220px;
+        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        padding: 10px 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s ease;
+        transform: translateY(10px);
+        z-index: 1020;
+        border: 1px solid #333;
+      }
+      .nav-item:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #e0e0e0;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .dropdown-menu a i {
+        width: 22px;
+        color: #005eea;
+        font-size: 15px;
+      }
+      .dropdown-menu a:hover {
+        background: #1a1a1a;
+        color: white;
+        padding-left: 26px;
+      }
+      /* RIGHT SECTION */
+      .right-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+      }
+      .desktop-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 40px;
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+      .desktop-login-btn:hover {
+        background: #1a4a96;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(11, 59, 130, 0.4);
+      }
+      .login-icon-btn {
+        background: #0b3b82;
+        color: #ffffff;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        position: relative;
+      }
+      .login-icon-btn.user-avatar {
+        background: #0b3b82;
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .avatar-dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: -24px;
+        background: #111111;
+        border-radius: 12px;
+        width: 180px;
+        padding: 8px 0;
+        border: 1px solid #333;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s ease;
+        z-index: 1050;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+      .login-icon-btn:hover .avatar-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .avatar-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 18px;
+        color: #e0e0e0;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .avatar-dropdown a i {
+        width: 20px;
+      }
+      .avatar-dropdown a:hover {
+        background: #1f1f1f;
+        color: white;
+      }
+      .menu-btn {
+        display: none;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+      }
+      .menu-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* RESPONSIVE: tablet & mobile — only logo + hamburger */
+      @media (max-width: 900px) {
+        .nav {
+          display: none;
+        }
+        .menu-btn {
+          display: flex;
+        }
+        .desktop-login-btn {
+          display: none !important;
+        }
+        .login-icon-btn {
+          display: none;
+        }
+        .header-container {
+          padding: 12px 24px;
+        }
+        .logo img {
+          height: 50px;
+          width: 125px;
+        }
+      }
+
+      /* MOBILE DRAWER (full navigation + socials) */
+      .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.25s;
+      }
+      .mobile-drawer {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 280px;
+        height: 100%;
+        background: #111111;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 2001;
+        transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 20px;
+        gap: 28px;
+        border-left: 1px solid #333;
+      }
+      .mobile-drawer.open {
+        right: 0;
+      }
+      .overlay-visible {
+        visibility: visible;
+        opacity: 1;
+      }
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #222;
+      }
+      .mobile-logo img {
+        height: 38px;
+      }
+      .mobile-close {
+        background: rgba(255, 255, 255, 0.1);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: white;
+        font-size: 18px;
+      }
+
+      .mobile-nav-list {
+        list-style: none;
+        flex: 1;
+      }
+      .mobile-nav-list li {
+        margin-bottom: 10px;
+      }
+      .mobile-nav-list a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: 0.2s;
+      }
+      .mobile-nav-list a i {
+        width: 24px;
+        color: #045fe5;
+      }
+      .mobile-nav-list a:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .mobile-submenu {
+        list-style: none;
+        padding-left: 46px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      .mobile-has-submenu.open .mobile-submenu {
+        max-height: 300px;
+      }
+      .mobile-submenu a {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      .mobile-login-btn {
+        background: #0b3b82;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        transition: 0.2s;
+      }
+      .mobile-login-btn:hover {
+        background: #1a4a96;
+      }
+      .mobile-user-info {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .mobile-user-avatar {
+        background: #0b3b82;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+        color: white;
+      }
+      .mobile-user-details p {
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .mobile-user-details span {
+        font-size: 12px;
+        color: #aaa;
+      }
+      .mobile-logout-btn {
+        background: rgba(255, 70, 70, 0.2);
+        color: #ff8a8a;
+        border: 1px solid #ff5e5e;
+      }
+      .mobile-social {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 20px;
+      }
+      .mobile-social a {
+        color: #aaa;
+        font-size: 20px;
+        transition: 0.2s;
+      }
+      .mobile-social a:hover {
+        color: white;
+      }
+
+      /* LOGIN POPUP */
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 3000;
+      }
+      .popup-overlay.active {
+        display: flex;
+      }
+      .popup-box {
+        background: #1a1a1a;
+        padding: 32px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        border: 1px solid #333;
+        position: relative;
+      }
+      .popup-box h3 {
+        color: white;
+        margin-bottom: 20px;
+      }
+      .popup-box input {
+        width: 100%;
+        padding: 14px 16px;
+        margin: 12px 0;
+        border: 1px solid #333;
+        border-radius: 12px;
+        background: #2a2a2a;
+        color: white;
+        outline: none;
+      }
+      .popup-box button {
+        width: 100%;
+        padding: 14px;
+        background: #0b3b82;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+      .popup-close-x {
+        position: absolute;
+        top: 18px;
+        right: 22px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #aaa;
+        transition: 0.2s;
+      }
+      .popup-close-x:hover {
+        color: white;
+      }
+    </style>
+    <!-- ==========header============= -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <title>Scankaro Helpkaro | Terms & Conditions</title>
+        <style>
+          /* -------------------------------
+           NO GLOBAL RESETS FOR *, HTML, BODY
+           Only specific class-based styling.
+           Full width, clean section.
+        ------------------------------- */
+          .terms-simple {
+            /* full width container with internal padding */
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto; /* centers content on extra large screens, but remains full-width feel */
+            background: #ffffff;
+            font-family:
+              system-ui,
+              -apple-system,
+              "Segoe UI",
+              Roboto,
+              "Helvetica Neue",
+              sans-serif;
+            color: #1e2a3e;
+            line-height: 1.45;
+            box-sizing: border-box;
+            padding: 2rem 17.8rem 3rem 21.8rem;
+          }
+
+          /* ensure all nested elements use border-box */
+          .terms-simple *,
+          .terms-simple *::before,
+          .terms-simple *::after {
+            box-sizing: border-box;
+          }
+
+          /* ----- header styling ----- */
+          .section-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 1.5rem;
+          }
+
+          .section-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.8rem 0;
+            color: #1a4c6e;
+            letter-spacing: -0.01em;
+          }
+
+          .section-header h1 svg {
+            flex-shrink: 0;
+            color: #1f6392;
+            stroke: currentColor;
+          }
+
+          .last-updated-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f0f6fa;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f6392;
+            width: fit-content;
+            margin-bottom: 1.25rem;
+          }
+
+          .welcome-line {
+            background: #f9fbfd;
+            padding: 1rem 1.25rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #2c3e4e;
+            border-left: 4px solid #1f6392;
+            margin-top: 0.25rem;
+          }
+
+          .welcome-line strong {
+            color: #1a4c6e;
+            font-weight: 700;
+          }
+
+          /* ----- terms list container (no cards, pure text with icons) ----- */
+          .terms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2rem 0 2rem 0;
+          }
+
+          /* each term block: clean separation */
+          .term-block {
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 1.5rem;
+          }
+
+          .term-block:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+          }
+
+          /* head with icon + heading */
+          .term-head {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .term-icon-svg {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2f8;
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            flex-shrink: 0;
+            color: #1f6392;
+          }
+
+          .term-icon-svg svg {
+            stroke: currentColor;
+          }
+
+          .term-head h2 {
+            font-size: 1.45rem;
+            font-weight: 600;
+            margin: 0;
+            color: #1f3b4c;
+            letter-spacing: -0.2px;
+          }
+
+          /* text content styling */
+          .term-text {
+            padding-left: 3.25rem; /* aligns with icon+heading visual */
+            color: #2c3f4f;
+            font-size: 0.98rem;
+          }
+
+          .term-text p {
+            margin: 0.6rem 0;
+          }
+
+          .term-text ul {
+            margin: 0.6rem 0;
+            padding-left: 1.4rem;
+          }
+
+          .term-text li {
+            margin: 0.35rem 0;
+          }
+
+          .term-text strong {
+            color: #1a5d7a;
+            font-weight: 600;
+          }
+
+          .sub-meta {
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+            background: #f8fafc;
+            padding: 0.5rem 1rem;
+            border-radius: 14px;
+            display: inline-block;
+            color: #4a627a;
+          }
+
+          /* inline contact row in term-block 12 uses flex */
+          .term-text a {
+            transition: opacity 0.2s;
+          }
+
+          .term-text a:hover {
+            text-decoration: underline !important;
+            opacity: 0.8;
+          }
+
+          /* ----- footer note section (responsible usage) ----- */
+          .footer-note {
+            margin-top: 3rem;
+            padding-top: 1.8rem;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+          }
+
+          .contact-row {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+          }
+
+          .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #1f6392;
+            font-weight: 500;
+            background: #f1f5f9;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+          }
+
+          .contact-link svg {
+            stroke: #1f6392;
+          }
+
+          .safety-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #eef3f7;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1c6c8c;
+          }
+
+          /* responsive design: adjust spacing for smaller devices */
+          @media (max-width: 720px) {
+            .terms-simple {
+              padding: 1.5rem 1.2rem 2rem 1.2rem;
+            }
+
+            .term-head h2 {
+              font-size: 1.25rem;
+            }
+
+            .term-text {
+              padding-left: 2.2rem;
+            }
+
+            .term-icon-svg {
+              width: 32px;
+              height: 32px;
+            }
+
+            .term-icon-svg svg {
+              width: 18px;
+              height: 18px;
+            }
+
+            .section-header h1 {
+              font-size: 1.7rem;
+              flex-wrap: wrap;
+            }
+
+            .footer-note {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+
+            .contact-row {
+              width: 100%;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .term-text {
+              padding-left: 0.5rem;
+            }
+            .term-head {
+              flex-wrap: wrap;
+            }
+          }
+
+          /* ensure full-width background but no global body interference */
+          body {
+            margin: 0;
+            background: #f8fafc; /* light page background outside container, but terms-simple remains white */
+            padding: 0;
+          }
+
+          /* optional: the main container is full width (no extra margin on sides), but we add a wrapper for readability */
+          .full-width-section {
+            width: 100%;
+            background: #ffffff;
+          }
+        </style>
+      </head>
+      <body>
+        <!-- full width wrapper to ensure background consistency, but no global css breaks -->
+        <div class="full-width-section">
+          <div class="terms-simple">
+            <!-- header section -->
+            <div class="section-header">
+              <h1>
+                <!-- svg icon: document / terms -->
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="stroke: #1f6392; stroke-width: 1.5"
+                >
+                  <path
+                    d="M4 4H20V20H4V4Z"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 7H16"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M8 11H16"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M8 15H13"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Terms &amp; Conditions
+              </h1>
+              <div class="last-updated-badge">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" />
+                  <path
+                    d="M12 8V12L14 14"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Last Updated: April 21, 2026
+              </div>
+              <div class="welcome-line">
+                Welcome to <strong>Scankaro Helpkaro</strong>. By using our
+                services, you agree to the following terms and conditions.
+              </div>
+            </div>
+
+            <!-- text-only simple section with icons (NO CARDS, pure text) -->
+            <div class="terms-list">
+              <!-- 1. Acceptance of Terms -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M5 12L10 17L19 8"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" />
+                    </svg>
+                  </span>
+                  <h2>1. Acceptance of Terms</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    By accessing or using our platform, you agree to comply with
+                    these Terms. If you do not agree, please do not use our
+                    services.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 2. Service Description -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        stroke="currentColor"
+                      />
+                      <path
+                        d="M8 7L16 7"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M8 12L12 12"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M8 17L14 17"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>2. Service Description</h2>
+                </div>
+                <div class="term-text">
+                  <p>Scankaro Helpkaro provides QR-based solutions for:</p>
+                  <ul>
+                    <li>Emergency identification</li>
+                    <li>Owner contact access</li>
+                    <li>Safety information sharing</li>
+                  </ul>
+                  <p>
+                    These services are intended for
+                    <strong>safety and convenience purposes only</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 3. User Responsibilities -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <circle cx="12" cy="8" r="4" stroke="currentColor" />
+                      <path
+                        d="M5 20V19C5 15.6863 7.68629 13 11 13H13C16.3137 13 19 15.6863 19 19V20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>3. User Responsibilities</h2>
+                </div>
+                <div class="term-text">
+                  <p>You agree to:</p>
+                  <ul>
+                    <li>
+                      Provide
+                      <strong>accurate and up-to-date information</strong>
+                    </li>
+                    <li>
+                      Use the service for <strong>lawful purposes only</strong>
+                    </li>
+                    <li>Not misuse or attempt to exploit the system</li>
+                  </ul>
+                  <p>
+                    You are responsible for maintaining the confidentiality of
+                    your account.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 4. QR Code Usage -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <rect
+                        x="4"
+                        y="4"
+                        width="6"
+                        height="6"
+                        stroke="currentColor"
+                      />
+                      <rect
+                        x="14"
+                        y="4"
+                        width="6"
+                        height="6"
+                        stroke="currentColor"
+                      />
+                      <rect
+                        x="4"
+                        y="14"
+                        width="6"
+                        height="6"
+                        stroke="currentColor"
+                      />
+                      <path
+                        d="M14 14H20M14 20H17M20 17V20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>4. QR Code Usage</h2>
+                </div>
+                <div class="term-text">
+                  <ul>
+                    <li>
+                      QR codes are meant for
+                      <strong>emergency or identification purposes</strong>
+                    </li>
+                    <li>
+                      Unauthorized or malicious use is strictly prohibited
+                    </li>
+                    <li>We are not liable for misuse by third parties</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- 5. Limitation of Liability -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M12 9V13"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12 17H12.01"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" />
+                    </svg>
+                  </span>
+                  <h2>5. Limitation of Liability</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    <strong>Scankaro Helpkaro is not responsible for:</strong>
+                  </p>
+                  <ul>
+                    <li>Misuse of QR codes</li>
+                    <li>Incorrect or outdated user information</li>
+                    <li>Delays in emergency response</li>
+                    <li>Any indirect or consequential damages</li>
+                  </ul>
+                  <div class="sub-meta">
+                    Use of the service is at your own risk.
+                  </div>
+                </div>
+              </div>
+
+              <!-- 6. Data & Privacy -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <rect
+                        x="5"
+                        y="9"
+                        width="14"
+                        height="12"
+                        rx="2"
+                        stroke="currentColor"
+                      />
+                      <path
+                        d="M8 9V6C8 3.79086 9.79086 2 12 2C14.2091 2 16 3.79086 16 6V9"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <circle
+                        cx="12"
+                        cy="15"
+                        r="1.5"
+                        fill="currentColor"
+                        stroke="none"
+                      />
+                    </svg>
+                  </span>
+                  <h2>6. Data &amp; Privacy</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    Your data is handled as per our
+                    <strong>Privacy Policy</strong>. By using our services, you
+                    consent to data collection and usage practices described
+                    there.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 7. Service Availability -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <circle cx="12" cy="12" r="8" stroke="currentColor" />
+                      <path
+                        d="M12 8V12L14 14"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>7. Service Availability</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    We strive to keep the service available at all times, but we
+                    do not guarantee:
+                  </p>
+                  <ul>
+                    <li>Uninterrupted access</li>
+                    <li>Error-free performance</li>
+                  </ul>
+                  <p>We may suspend or update services without prior notice.</p>
+                </div>
+              </div>
+
+              <!-- 8. Account Termination -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M6 6L18 18"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" />
+                    </svg>
+                  </span>
+                  <h2>8. Account Termination</h2>
+                </div>
+                <div class="term-text">
+                  <p>We reserve the right to:</p>
+                  <ul>
+                    <li>Suspend or terminate accounts</li>
+                    <li>Remove content or data</li>
+                  </ul>
+                  <p>If users violate these terms.</p>
+                </div>
+              </div>
+
+              <!-- 9. Intellectual Property -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M12 3L14 8H19L15 11L17 16L12 13L7 16L9 11L5 8H10L12 3Z"
+                        stroke="currentColor"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>9. Intellectual Property</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    All content, branding, and technology belong to
+                    <strong>Scankaro Helpkaro</strong> and may not be copied or
+                    reused without permission.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 10. Changes to Terms -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M4 4V9H9"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M20 20V15H15"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M4 9L8.5 4.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M20 15L15.5 19.5"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>10. Changes to Terms</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    We may update these Terms at any time. Continued use of the
+                    service means you accept the updated Terms.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 11. Governing Law -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <path
+                        d="M4 12H20M12 4V20M4 4L20 20"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="12" cy="12" r="2" stroke="currentColor" />
+                    </svg>
+                  </span>
+                  <h2>11. Governing Law</h2>
+                </div>
+                <div class="term-text">
+                  <p>
+                    These Terms are governed by the laws of
+                    <strong>India</strong>. Any disputes will be handled under
+                    applicable jurisdiction.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 12. Contact Information (with inline SVG icons instead of emojis) -->
+              <div class="term-block">
+                <div class="term-head">
+                  <span class="term-icon-svg">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    >
+                      <rect
+                        x="2"
+                        y="4"
+                        width="20"
+                        height="16"
+                        rx="2"
+                        stroke="currentColor"
+                      />
+                      <path
+                        d="M22 7L12 13L2 7"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                  <h2>12. Contact Information</h2>
+                </div>
+                <div class="term-text">
+                  <p>For any queries:</p>
+                  <div
+                    style="
+                      display: flex;
+                      gap: 1.2rem;
+                      flex-wrap: wrap;
+                      align-items: center;
+                      margin: 0.5rem 0 0.2rem;
+                    "
+                  >
+                    <span
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                      >
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                        <path d="M22 7L12 13L2 7" />
+                      </svg>
+                      <a
+                        href="mailto:support@scankaro.com"
+                        style="
+                          color: #1f6392;
+                          text-decoration: none;
+                          font-weight: 500;
+                        "
+                        >support@scankaro.com</a
+                      >
+                    </span>
+                    <span
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                      "
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path
+                          d="M2 12H22M12 2C14.5 4 15 9 15 12C15 15 14.5 20 12 22C9.5 20 9 15 9 12C9 9 9.5 4 12 2Z"
+                        />
+                      </svg>
+                      <a
+                        href="http://www.scankaro.com"
+                        target="_blank"
+                        style="
+                          color: #1f6392;
+                          text-decoration: none;
+                          font-weight: 500;
+                        "
+                        >www.scankaro.com</a
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- footer: responsible usage & final contact -->
+            <div class="footer-note">
+              <div class="contact-row">
+                <span class="contact-link">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  >
+                    <path
+                      d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z"
+                    />
+                    <path d="M22 6L12 13L2 6" />
+                  </svg>
+                  support@scankaro.com
+                </span>
+                <span class="contact-link">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path
+                      d="M2 12H22M12 2C14.5 4 15 9 15 12C15 15 14.5 20 12 22C9.5 20 9 15 9 12C9 9 9.5 4 12 2Z"
+                    />
+                  </svg>
+                  scankaro.com
+                </span>
+              </div>
+              <div class="safety-text">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path d="M12 3L3 8L12 13L21 8L12 3Z" />
+                  <path d="M3 13L12 18L21 13" />
+                  <path d="M3 18L12 23L21 18" />
+                </svg>
+                Use responsibly. Stay safe.
+              </div>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+    <!-- =======end================= -->
+    <!-- ==========Footer============= -->
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <title>ScanKaro — Smart QR Safety Ecosystem</title>
+        <!-- Font Awesome 6 (local override) -->
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <!-- Google Font: Inter -->
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          /* ---------- GLOBAL RESET + BASE (NO EXTERNAL OVERRIDES, LOCAL CONTEXT) ---------- */
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            font-family: "Inter", sans-serif;
+            background: #f2f5fa;
+            scroll-behavior: smooth;
+          }
+
+          /* ===== FOOTER STYLES (exactly as original – responsive, centered) ===== */
+          .footer {
+            background: #000;
+            color: #fff;
+            padding: 60px 20px 20px;
+          }
+          .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+          }
+          .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            margin-bottom: 15px;
+          }
+          .footer-logo img {
+            height: 40px;
+          }
+          .footer p {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.6;
+          }
+          .footer h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+          }
+          .footer-links a {
+            display: block;
+            text-decoration: none;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+            transition: 0.2s;
+          }
+          .footer-links a:hover {
+            color: #e91e63;
+          }
+          .footer-contact div {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+          }
+          .social {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+          }
+          .social a {
+            width: 35px;
+            height: 35px;
+            background: #e91e63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+          }
+          .copyright {
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 13px;
+            color: #aaa;
+          }
+          @media (max-width: 900px) {
+            .footer-container {
+              grid-template-columns: repeat(2, 1fr);
+              text-align: center;
+            }
+            .footer-logo {
+              justify-content: center;
+            }
+            .social {
+              justify-content: center;
+            }
+            .footer-contact div {
+              justify-content: center;
+            }
+            .footer-links a {
+              text-align: left;
+              padding-left: 40px;
+            }
+          }
+          @media (max-width: 600px) {
+            .footer-container {
+              grid-template-columns: 1fr 1fr;
+              text-align: center;
+              gap: 25px;
+            }
+            .footer-container > div:first-child {
+              grid-column: span 2;
+            }
+            .footer-container > div:last-child {
+              grid-column: span 2;
+            }
+            .footer-logo {
+              justify-content: center;
+            }
+            .social {
+              justify-content: center;
+            }
+            .footer-contact div {
+              justify-content: center;
+            }
+            .footer-links a {
+              text-align: left;
+              padding-left: 40px;
+            }
+          }
+          .footer-container > div:nth-child(2),
+          .footer-container > div:nth-child(3) {
+            padding: 0 4px;
+          }
+          .footer-container > div:nth-child(3) {
+            margin-left: -32px;
+          }
+        </style>
+      </head>
+      <body>
+        <!-- ========== EXISTING FOOTER (PRESERVED FULL) ========== -->
+        <footer class="footer">
+          <div class="footer-container">
+            <div>
+              <div class="footer-logo">
+                <img
+                  src="https://scankarohelpkaro.com/images/logo.png"
+                  alt="ScanKaro"
+                />
+              </div>
+              <p>
+                Smart QR safety solutions for vehicles, pets, luggage &
+                identity. Connect instantly in emergencies with privacy-first
+                technology.
+              </p>
+              <div class="social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a
+                ><a href="#"><i class="fab fa-instagram"></i></a
+                ><a href="#"><i class="fab fa-twitter"></i></a
+                ><a href="#"><i class="fab fa-youtube"></i></a
+                ><a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+            <div>
+              <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="About.html">About Us</a>
+                <a href="index.html#QrProducts">QR Products</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms & Conditions</a>
+              </div>
+            </div>
+            <div>
+              <h3>Smart QR</h3>
+              <div class="footer-links">
+                <a href="index.html#SmartFeatures"
+                  ><i class="fas fa-microchip"></i> Smart Features</a
+                ><a href="index.html#QrProducts"
+                  ><i class="fas fa-cubes"></i> Safety Products</a
+                ><a href="index.html#QRESS"
+                  ><i class="fas fa-truck-fast"></i> Emergency Services</a
+                ><a href="index.html#QRUC"
+                  ><i class="fas fa-chart-simple"></i> Use Cases</a
+                ><a href="index.html#ESS"
+                  ><i class="fas fa-bolt"></i> Smart Services</a
+                >
+              </div>
+            </div>
+            <div>
+              <h3>Contact & Identity</h3>
+              <div class="footer-contact">
+                <div><i class="fa fa-phone"></i> +91 90000 00000</div>
+                <div><i class="fa fa-envelope"></i> support@scankaro.com</div>
+                <div><i class="fa fa-location-dot"></i> India</div>
+                <div><i class="fa fa-id-card"></i> Digital Identity</div>
+              </div>
+            </div>
+          </div>
+          <div class="copyright">
+            © 2026 ScanKaro HelpKaro. All Rights Reserved. | QR Safety Ecosystem
+          </div>
+        </footer>
+
+        <script>
+          // ------------------ GLOBAL LOGIC (preserved original login + UI + drawer behavior) ------------------
+          let isLoggedIn = false,
+            currentUserEmail = "";
+          const desktopLoginBtn = document.getElementById("desktopLoginBtn"),
+            loginIconBtn = document.getElementById("loginIconAvatarBtn"),
+            popup = document.getElementById("loginPopup"),
+            closePopupX = document.getElementById("closePopupX"),
+            submitLoginBtn = document.getElementById("submitLoginBtn"),
+            loginEmail = document.getElementById("loginEmail"),
+            loginPassword = document.getElementById("loginPassword");
+          const mobileMenuToggle = document.getElementById("mobileMenuToggle"),
+            mobileOverlay = document.getElementById("mobileOverlay"),
+            mobileDrawer = document.getElementById("mobileDrawer"),
+            closeDrawerBtn = document.getElementById("closeDrawerBtn"),
+            mobileDynamic = document.getElementById("mobileDynamicContent");
+
+          function updateUI() {
+            if (desktopLoginBtn)
+              desktopLoginBtn.style.display = isLoggedIn ? "none" : "flex";
+            if (loginIconBtn) {
+              if (isLoggedIn && currentUserEmail) {
+                let initial = currentUserEmail.charAt(0).toUpperCase();
+                loginIconBtn.innerHTML = "";
+                loginIconBtn.classList.add("user-avatar");
+                loginIconBtn.textContent = initial;
+                const dd = document.createElement("div");
+                dd.className = "avatar-dropdown";
+                dd.innerHTML = `<a href="#" id="dropdownLogoutDynamic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileDynamic"><i class="fas fa-user-cog"></i> Profile</a>`;
+                loginIconBtn.appendChild(dd);
+                dd.querySelector("#dropdownLogoutDynamic")?.addEventListener(
+                  "click",
+                  (e) => {
+                    e.preventDefault();
+                    logoutUser();
+                  },
+                );
+                dd.querySelector("#profileDynamic")?.addEventListener(
+                  "click",
+                  (e) => {
+                    e.preventDefault();
+                    alert("Profile dashboard (demo)");
+                  },
+                );
+              } else {
+                loginIconBtn.classList.remove("user-avatar");
+                loginIconBtn.innerHTML = `<i class="fas fa-sign-in-alt" id="avatarIcon"></i><div class="avatar-dropdown"><a href="#" id="dropdownLogoutStatic"><i class="fas fa-sign-out-alt"></i> Logout</a><a href="#" id="profileStatic"><i class="fas fa-user-cog"></i> Profile</a></div>`;
+                document
+                  .getElementById("dropdownLogoutStatic")
+                  ?.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    logoutUser();
+                  });
+                document
+                  .getElementById("profileStatic")
+                  ?.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    alert("Profile demo");
+                  });
+              }
+            }
+            renderMobileDrawer();
+          }
+          function renderMobileDrawer() {
+            if (!mobileDynamic) return;
+            if (isLoggedIn && currentUserEmail) {
+              let letter = currentUserEmail.charAt(0).toUpperCase();
+              mobileDynamic.innerHTML = `<div class="mobile-user-info"><div class="mobile-user-avatar">${letter}</div><div class="mobile-user-details"><p>${currentUserEmail}</p><span>Secure QR Plan</span></div></div><ul class="mobile-nav-list"><li><a href="#HOME"><i class="fas fa-home"></i> Home</a></li><li><a href="#AboutUs"><i class="fas fa-info-circle"></i> About Us</a></li><li class="mobile-has-submenu" id="mobSmartSub"><a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#SmartFeatures"> Smart Features</a></li><li><a href="#QrProducts"> QR Products</a></li><li><a href="#QRESS"> Emergency Services</a></li><li><a href="#QRUC"> Use Cases</a></li><li><a href="#ESS"> Smart Services</a></li></ul></li><li class="mobile-has-submenu" id="mobIdentSub"><a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#HOME"> Digital Identity</a></li><li><a href="#AboutUs"> Privacy Shield</a></li><li><a href="#FAQ"> Identity FAQ</a></li></ul></li><li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li></ul><button class="mobile-login-btn mobile-logout-btn" id="mobileLogoutAct"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+              document
+                .getElementById("mobileLogoutAct")
+                ?.addEventListener("click", logoutUser);
+              document
+                .getElementById("mobSmartSub")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobSmartSub")
+                    ?.classList.toggle("open");
+                });
+              document
+                .getElementById("mobIdentSub")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobIdentSub")
+                    ?.classList.toggle("open");
+                });
+            } else {
+              mobileDynamic.innerHTML = `<ul class="mobile-nav-list"><li><a href="#HOME"><i class="fas fa-home"></i> Home</a></li><li><a href="#AboutUs"><i class="fas fa-info-circle"></i> About Us</a></li><li class="mobile-has-submenu" id="mobSmartSubOut"><a href="javascript:void(0)"><i class="fas fa-qrcode"></i> Smart QR <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#SmartFeatures"> Smart Features</a></li><li><a href="#QrProducts"> QR Products</a></li><li><a href="#QRESS"> Emergency Services</a></li><li><a href="#QRUC"> Use Cases</a></li><li><a href="#ESS"> Smart Services</a></li></ul></li><li class="mobile-has-submenu" id="mobIdentSubOut"><a href="javascript:void(0)"><i class="fas fa-id-card"></i> Identity <i class="fas fa-chevron-down"></i></a><ul class="mobile-submenu"><li><a href="#HOME"> Digital Identity</a></li><li><a href="#AboutUs"> Privacy Shield</a></li><li><a href="#FAQ"> Identity FAQ</a></li></ul></li><li><a href="#FAQ"><i class="fas fa-question-circle"></i> FAQ</a></li></ul><button class="mobile-login-btn" id="mobileLoginDrawerBtn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
+              document
+                .getElementById("mobileLoginDrawerBtn")
+                ?.addEventListener("click", () => {
+                  closeDrawer();
+                  openPopup();
+                });
+              document
+                .getElementById("mobSmartSubOut")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobSmartSubOut")
+                    ?.classList.toggle("open");
+                });
+              document
+                .getElementById("mobIdentSubOut")
+                ?.querySelector("a")
+                ?.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  document
+                    .getElementById("mobIdentSubOut")
+                    ?.classList.toggle("open");
+                });
+            }
+          }
+          function logoutUser() {
+            isLoggedIn = false;
+            currentUserEmail = "";
+            updateUI();
+            alert("Logged out.");
+            closeDrawer();
+          }
+          function performLogin(email, pass) {
+            if (email && pass && email.includes("@")) {
+              isLoggedIn = true;
+              currentUserEmail = email;
+              updateUI();
+              closePopupFunc();
+              alert(`Welcome ${email}!`);
+            } else alert("Valid email & password required");
+          }
+          function openPopup() {
+            if (popup) {
+              popup.classList.add("active");
+              document.body.style.overflow = "hidden";
+              if (mobileDrawer?.classList.contains("open")) closeDrawer();
+            }
+          }
+          function closePopupFunc() {
+            if (popup) {
+              popup.classList.remove("active");
+              document.body.style.overflow = "";
+              if (loginEmail) loginEmail.value = "";
+              if (loginPassword) loginPassword.value = "";
+            }
+          }
+          function closeDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.remove("open");
+            if (mobileOverlay)
+              mobileOverlay.classList.remove("overlay-visible");
+            document.body.style.overflow = "";
+          }
+          function openDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.add("open");
+            if (mobileOverlay) mobileOverlay.classList.add("overlay-visible");
+            document.body.style.overflow = "hidden";
+          }
+          if (desktopLoginBtn)
+            desktopLoginBtn.addEventListener("click", openPopup);
+          if (loginIconBtn)
+            loginIconBtn.addEventListener("click", (e) => {
+              if (!isLoggedIn) openPopup();
+            });
+          if (submitLoginBtn)
+            submitLoginBtn?.addEventListener("click", () =>
+              performLogin(
+                loginEmail?.value.trim(),
+                loginPassword?.value.trim(),
+              ),
+            );
+          if (closePopupX)
+            closePopupX?.addEventListener("click", closePopupFunc);
+          if (popup)
+            popup?.addEventListener("click", (e) => {
+              if (e.target === popup) closePopupFunc();
+            });
+          if (mobileMenuToggle)
+            mobileMenuToggle?.addEventListener("click", openDrawer);
+          if (closeDrawerBtn)
+            closeDrawerBtn?.addEventListener("click", closeDrawer);
+          if (mobileOverlay)
+            mobileOverlay?.addEventListener("click", closeDrawer);
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              if (mobileDrawer?.classList.contains("open")) closeDrawer();
+              if (popup?.classList.contains("active")) closePopupFunc();
+            }
+          });
+          updateUI();
+
+          // ========== BRAND NEW FAQ: BUILD ENHANCED ACCORDION (no legacy conflict) ==========
+          const faqData = [
+            {
+              question: "How does ScanKaro QR ensure data privacy?",
+              answer:
+                "We use end-to-end encryption, role-based access, and auto-expiring links. Personal data is never sold, and you control what information is shared when someone scans your QR.",
+            },
+            {
+              question:
+                "Can I use the QR sticker for multiple vehicles or pets?",
+              answer:
+                "Yes! Each QR product is linked to a unique profile. You can manage multiple assets from your dashboard — vehicles, pet tags, luggage tags — all under one account.",
+            },
+            {
+              question: "What happens when someone scans my emergency QR?",
+              answer:
+                "The scanner instantly sees the safety info you've chosen (e.g., medical notes, emergency contacts). Simultaneously, you receive real-time alerts with location details.",
+            },
+            {
+              question: "Is the QR durable for outdoor conditions?",
+              answer:
+                "Absolutely. Our QR stickers and tags are weather-resistant, UV-protected, and designed for windshields, pet collars, or luggage handles — longevity guaranteed.",
+            },
+            {
+              question: "Do I need a subscription to use advanced features?",
+              answer:
+                "Basic QR linking is free forever. Premium features — real-time alerts, analytics, multiple profiles — start at just ₹199/year. No hidden fees.",
+            },
+          ];
+
+          const container = document.getElementById("dynamicFaqContainer");
+          if (container) {
+            container.innerHTML = "";
+            faqData.forEach((item, idx) => {
+              const faqItem = document.createElement("div");
+              faqItem.className = "faq-item-enhanced";
+              const uniqueId = `faqEnhanced${idx}`;
+              faqItem.innerHTML = `
+          <button class="faq-question-btn" aria-expanded="false">
+            <span>${item.question}</span>
+            <span class="faq-icon-wrapper"><i class="fas fa-chevron-down"></i></span>
+          </button>
+          <div class="faq-answer-enhanced">
+            <p>${item.answer}</p>
+            ${idx === 2 ? "<ul><li>✅ Emergency contacts notified</li><li>📍 Live GPS location shared</li><li>🆘 Priority alert system</li></ul>" : ""}
+          </div>
+        `;
+              const btn = faqItem.querySelector(".faq-question-btn");
+              btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const isActive = faqItem.classList.contains("active");
+                document
+                  .querySelectorAll(".faq-item-enhanced")
+                  .forEach((item) => item.classList.remove("active"));
+                if (!isActive) faqItem.classList.add("active");
+              });
+              container.appendChild(faqItem);
+            });
+            // open first by default for better UX
+            if (container.children[0])
+              container.children[0].classList.add("active");
+          }
+
+          // fix missing element references for nav highlights and avoid errors
+          window.addEventListener("load", () => {
+            const sections = document.querySelectorAll(
+              "section[id], div[id='FAQ']",
+            );
+            window.addEventListener("scroll", () => {
+              let current = "";
+              sections.forEach((s) => {
+                const top = s.offsetTop - 150;
+                if (pageYOffset >= top) current = s.getAttribute("id");
+              });
+              document.querySelectorAll(".nav-link").forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${current}`)
+                  link.classList.add("active");
+              });
+            });
+          });
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
